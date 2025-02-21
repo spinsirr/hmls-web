@@ -1,6 +1,6 @@
 const mailOptions = {
-  from: 'info@hmlsmobilemechanic.com',
-  to: 'info@hmlsmobilemechanic.com',
+  from: 'hmlsmservice@gmail.com',
+  to: 'hmlsmservice@gmail.com',
   subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
   text: `
     Name: ${name}
