@@ -5,10 +5,6 @@
 [build.environment]
   NODE_VERSION = "18"
 
-[template.environment]
-  RECAPTCHA_SITE_KEY = "Site key for Google reCAPTCHA"
-  RECAPTCHA_SECRET_KEY = "Secret key for Google reCAPTCHA"
-  SENDGRID_API_KEY = "API key for SendGrid email service"
 
 [[redirects]]
   from = "/send"
