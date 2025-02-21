@@ -3,8 +3,12 @@ const axios = require('axios');
 
 exports.handler = async (event) => {
   try {
+    // Only allow POST requests
     if (event.httpMethod !== 'POST') {
-      return { statusCode: 405, body: 'Method Not Allowed' };
+      return { 
+        statusCode: 405, 
+        body: JSON.stringify({ message: 'Method Not Allowed' })
+      };
     }
 
     const formData = JSON.parse(event.body);
@@ -12,9 +16,9 @@ exports.handler = async (event) => {
 
     // Verify reCAPTCHA
     const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
-    const recaptchaResponseData = await axios.post(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {},
+    const recaptchaVerification = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      null,
       {
         params: {
           secret: recaptchaSecret,
@@ -23,40 +27,62 @@ exports.handler = async (event) => {
       }
     );
 
-    if (!recaptchaResponseData.data.success) {
-      console.warn("reCAPTCHA validation failed:", recaptchaResponseData.data);
+    if (!recaptchaVerification.data.success) {
+      console.error('reCAPTCHA verification failed:', recaptchaVerification.data);
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: "reCAPTCHA validation failed" }),
+        body: JSON.stringify({ message: 'reCAPTCHA verification failed' })
       };
     }
 
-    // Setup SendGrid
+    // Configure SendGrid
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-    const mailOptions = {
-      from: 'hmlsmservice@gmail.com',
+    // Prepare email content
+    const emailContent = `
+      New Contact Form Submission
+      
+      Name: ${formData.name}
+      Email: ${formData.email}
+      Phone: ${formData.phone}
+      VIN (if provided): ${formData.vin || 'Not provided'}
+      
+      Message:
+      ${formData.message}
+      
+      Submitted on: ${new Date().toLocaleString()}
+    `;
+
+    const msg = {
       to: 'hmlsmservice@gmail.com',
+      from: 'hmlsmservice@gmail.com', // Must be verified sender
       subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
-      text: `
-        Name: ${formData.name}
-        Email: ${formData.email}
-        Phone: ${formData.phone}
-        Message: ${formData.message}
-      `
+      text: emailContent,
+      replyTo: formData.email
     };
 
-    await sgMail.send(mailOptions);
+    // Send email
+    await sgMail.send(msg);
 
     return {
       statusCode: 200,
       body: JSON.stringify({ message: 'Email sent successfully' })
     };
+
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error processing request:', error);
+    
+    // Check for SendGrid specific errors
+    if (error.response && error.response.body) {
+      console.error('SendGrid Error:', error.response.body);
+    }
+
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: error.message })
+      body: JSON.stringify({ 
+        message: 'Error sending email',
+        error: error.message 
+      })
     };
   }
 }; 
