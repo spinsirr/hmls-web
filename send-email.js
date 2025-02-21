@@ -3,10 +3,10 @@ const mailOptions = {
   to: 'hmlsmservice@gmail.com',
   subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
   text: `
-    Name: ${name}
-    Email: ${email}
-    Phone: ${phone}
-    Message: ${message}
+    Name: ${formData.name}
+    Email: ${formData.email}
+    Phone: ${formData.phone}
+    Message: ${formData.message}
   `
 }; 
 
