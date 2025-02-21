@@ -374,7 +374,7 @@
               </div>
               <div
                 class="g-recaptcha mt-20px mb-10px"
-                data-sitekey="6LcPF94qAAAAABp_e3wXy9J7QjWARwiGCdCY0e1Z"
+                data-sitekey="<%= process.env.RECAPTCHA_SITE_KEY %>"
                 data-callback="onRecaptchaSuccess"
               ></div>
               <div id="recaptcha-error" class="text-danger" style="display: none;">Please complete the reCAPTCHA verification.</div>
