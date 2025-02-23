@@ -374,16 +374,12 @@
               </div>
               <div
                 class="g-recaptcha mt-20px mb-10px"
-                data-sitekey="<%= process.env.RECAPTCHA_SITE_KEY %>"
-                data-callback="onRecaptchaSuccess"
+                data-sitekey="6LeQ7JcqAAAAAHQY4L4oZrYBRKR6yM0XSCBJZuea"
               ></div>
-              <div id="recaptcha-error" class="text-danger" style="display: none;">Please complete the reCAPTCHA verification.</div>
               <div class="col-xl-6 col-md-5 text-center text-md-end sm-mt-20px">
                 <button
-                  id="submit-button"
                   class="btn btn-gradient-emerald-blue-emerald-green btn-small btn-round-edge submit"
                   type="submit"
-                  onclick="validateForm(event)"
                 >
                   Send message
                 </button>
@@ -506,21 +502,6 @@
     <!-- end scroll progress -->
     <!-- javascript libraries -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script>
-      function onRecaptchaSuccess() {
-        document.getElementById('recaptcha-error').style.display = 'none';
-      }
-
-      function validateForm(event) {
-        event.preventDefault();
-        const response = grecaptcha.getResponse();
-        if (!response) {
-          document.getElementById('recaptcha-error').style.display = 'block';
-          return false;
-        }
-        document.getElementById('contact-form').submit();
-      }
-    </script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/vendors.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
