@@ -77,8 +77,8 @@ exports.handler = async (event) => {
 
     // Send email
     const msg = {
-      to: "maceautomotive@gmail.com",
-      from: "maceautomotive@gmail.com",
+      to: "hmlsmservice@gmail.com",
+      from: "hmlsmservice@gmail.com",
       subject: "Contact Form Submission",
       text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nVIN: ${vin || "N/A"}\nMessage: ${message}`,
     };
