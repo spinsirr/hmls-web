@@ -1,99 +1,92 @@
-const sgMail = require("@sendgrid/mail");
-const axios = require("axios");
+const nodemailer = require('nodemailer');
+const axios = require('axios');
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// Create SMTP transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD
+  }
+});
 
-exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: "Method Not Allowed" }),
-    };
+exports.handler = async (event, context) => {
+  // Only allow POST
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   try {
-    // Parse the JSON body directly (frontend sends JSON)
-    const body = JSON.parse(event.body);
-
-    const {
-      name,
-      email,
-      phone,
-      vin,
-      message,
-      website,
-      formTimestamp,
-      "g-recaptcha-response": recaptchaResponse,
-    } = body;
-
-    console.log("Parsed Fields:", { name, email, phone, vin, message, website, formTimestamp, recaptchaResponse });
+    const data = JSON.parse(event.body);
+    const { name, email, phone, vin, message, 'g-recaptcha-response': recaptchaResponse } = data;
 
     // Validate required fields
-    if (!formTimestamp || !recaptchaResponse) {
-      console.warn("Missing required fields");
+    if (!name || !email || !message || !recaptchaResponse) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: "All fields are required" }),
-      };
-    }
-
-    // Time-based validation
-    const now = Date.now();
-    if (now - parseInt(formTimestamp, 10) < 3000) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "Form submitted too quickly" }),
-      };
-    }
-
-    // Honeypot check
-    if (website) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "Spam detected" }),
+        body: JSON.stringify({ message: 'Please fill in all required fields' })
       };
     }
 
     // Verify reCAPTCHA
-    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
-    const recaptchaResponseData = await axios.post(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {},
+    const recaptchaVerification = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      null,
       {
         params: {
-          secret: recaptchaSecret,
-          response: recaptchaResponse,
-        },
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: recaptchaResponse
+        }
       }
     );
 
-    if (!recaptchaResponseData.data.success) {
-      console.warn("reCAPTCHA validation failed:", recaptchaResponseData.data);
+    if (!recaptchaVerification.data.success) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ message: "reCAPTCHA validation failed" }),
+        body: JSON.stringify({ message: 'reCAPTCHA verification failed' })
       };
     }
 
-    // Send email
-    const msg = {
-      to: "hmlsmservice@gmail.com",
-      from: "hmlsmservice@gmail.com",
-      subject: "Contact Form Submission",
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nVIN: ${vin || "N/A"}\nMessage: ${message}`,
+    // Prepare email content
+    const mailOptions = {
+      from: process.env.SMTP_FROM_EMAIL,
+      to: process.env.SMTP_TO_EMAIL,
+      subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
+      text: `
+Name: ${name}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+VIN: ${vin || 'Not provided'}
+
+Message:
+${message}
+      `,
+      html: `
+<h2>New Contact Form Submission</h2>
+<p><strong>Name:</strong> ${name}</p>
+<p><strong>Email:</strong> ${email}</p>
+<p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+<p><strong>VIN:</strong> ${vin || 'Not provided'}</p>
+<h3>Message:</h3>
+<p>${message.replace(/\n/g, '<br>')}</p>
+      `
     };
 
-    await sgMail.send(msg);
+    // Send email
+    await transporter.sendMail(mailOptions);
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Email sent successfully" }),
+      body: JSON.stringify({ message: 'Email sent successfully' })
     };
+
   } catch (error) {
-    console.error("Error processing form submission:", error);
+    console.error('Error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Internal Server Error" }),
+      body: JSON.stringify({ message: 'Error sending email' })
     };
   }
 };
