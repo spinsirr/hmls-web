@@ -51,8 +51,9 @@ exports.handler = async (event, context) => {
 
     // Prepare email content
     const mailOptions = {
-      from: process.env.SMTP_FROM_EMAIL,
+      from: email,
       to: process.env.SMTP_TO_EMAIL,
+      replyTo: email,
       subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
       text: `
 Name: ${name}
