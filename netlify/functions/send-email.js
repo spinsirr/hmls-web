@@ -21,44 +21,43 @@ exports.handler = async (event, context) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  try {
-    const data = JSON.parse(event.body);
-    const { name, email, phone, vin, message, 'g-recaptcha-response': recaptchaResponse } = data;
+  const data = JSON.parse(event.body);
+  const { name, email, phone, vin, message, 'g-recaptcha-response': recaptchaResponse } = data;
 
-    // Validate required fields
-    if (!name || !email || !message || !recaptchaResponse) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Please fill in all required fields' })
-      };
-    }
+  // Validate required fields
+  if (!name || !email || !message || !recaptchaResponse) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Please fill in all required fields' })
+    };
+  }
 
-    // Verify reCAPTCHA
-    const recaptchaVerification = await axios.post(
-      'https://www.google.com/recaptcha/api/siteverify',
-      null,
-      {
-        params: {
-          secret: process.env.RECAPTCHA_SECRET_KEY,
-          response: recaptchaResponse
-        }
+  // Verify reCAPTCHA
+  const recaptchaVerification = await axios.post(
+    'https://www.google.com/recaptcha/api/siteverify',
+    null,
+    {
+      params: {
+        secret: process.env.RECAPTCHA_SECRET_KEY,
+        response: recaptchaResponse
       }
-    );
-
-    if (!recaptchaVerification.data.success) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'reCAPTCHA verification failed' })
-      };
     }
+  );
 
-    // Prepare email content
-    const mailOptions = {
-      from: process.env.SMTP_USER, // Use authenticated sender email
-      to: process.env.SMTP_TO_EMAIL,
-      replyTo: email,
-      subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
-      text: `
+  if (!recaptchaVerification.data.success) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'reCAPTCHA verification failed' })
+    };
+  }
+
+  // Prepare email content
+  const mailOptions = {
+    from: process.env.SMTP_USER, // Use authenticated sender email
+    to: process.env.SMTP_TO_EMAIL,
+    replyTo: email,
+    subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
+    text: `
 Name: ${name}
 Email: ${email}
 Phone: ${phone || 'Not provided'}
@@ -66,8 +65,8 @@ VIN: ${vin || 'Not provided'}
 
 Message:
 ${message}
-      `,
-      html: `
+    `,
+    html: `
 <h2>New Contact Form Submission</h2>
 <p><strong>Name:</strong> ${name}</p>
 <p><strong>Email:</strong> ${email}</p>
@@ -75,22 +74,14 @@ ${message}
 <p><strong>VIN:</strong> ${vin || 'Not provided'}</p>
 <h3>Message:</h3>
 <p>${message.replace(/\n/g, '<br>')}</p>
-      `
-    };
+    `
+  };
 
-    // Send email
-    await transporter.sendMail(mailOptions);
+  // Send email
+  await transporter.sendMail(mailOptions);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'Email sent successfully' })
-    };
-
-  } catch (error) {
-    console.error('Error:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error sending email' })
-    };
-  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Email sent successfully' })
+  };
 };
