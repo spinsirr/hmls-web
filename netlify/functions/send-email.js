@@ -45,7 +45,7 @@ exports.handler = async (event, context) => {
 
   // Prepare email content
   const mailOptions = {
-    from: process.env.SMTP_USER, // Use authenticated sender email
+    from: `${name} <${process.env.SMTP_FROM_EMAIL}>`, // Show customer name but use authenticated email
     to: process.env.SMTP_TO_EMAIL,
     replyTo: email,
     subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
@@ -69,12 +69,20 @@ ${message}
     `
   };
 
-  // Send email
-  await transporter.sendMail(mailOptions);
-
-  return {
-    statusCode: 200,
-    headers,
-    body: JSON.stringify({ message: 'Email sent successfully' })
-  };
+  try {
+    // Send email
+    await transporter.sendMail(mailOptions);
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({ message: 'Email sent successfully' })
+    };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ message: 'Failed to send email', error: error.message })
+    };
+  }
 };
