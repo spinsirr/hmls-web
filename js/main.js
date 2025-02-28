@@ -233,15 +233,6 @@
 
         const form = event.target;
 
-        // Verify reCAPTCHA
-        const recaptchaResponse = document.querySelector(
-          'textarea[name="g-recaptcha-response"]'
-        );
-        if (!recaptchaResponse || !recaptchaResponse.value) {
-          alert("Please complete the reCAPTCHA validation.");
-          return;
-        }
-
         const formData = new FormData(event.target);
         const jsonData = {};
         formData.forEach((value, key) => {
@@ -2440,51 +2431,6 @@
       },
     });
   }
-
-  /* ===================================
- Contact form validation
- ====================================== 
-
- document.addEventListener("DOMContentLoaded", function() {
-    const contactForm = document.getElementById('contact-form');
-    
-    if (contactForm) {
-        // Only run this if the contact form exists on the page
-        contactForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                vin: document.getElementById('vin').value,
-                message: document.getElementById('message').value,
-            };
-
-            fetch('/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Email sent successfully') {
-                    alert('Email sent successfully!');
-                    contactForm.reset();
-                } else {
-                    alert('Error sending email.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error sending email.');
-            });
-        });
-    }
-});
-*/
 
   /* ===================================
      Revolution slider
