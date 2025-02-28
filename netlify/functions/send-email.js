@@ -16,9 +16,21 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.handler = async (event, context) => {
+  // Set security headers
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Content-Security-Policy': "frame-ancestors 'self' https://www.google.com",
+    'X-Frame-Options': 'SAMEORIGIN'
+  };
+
   // Only allow POST
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { 
+      statusCode: 405, 
+      headers,
+      body: 'Method Not Allowed' 
+    };
   }
 
   const data = JSON.parse(event.body);
@@ -28,6 +40,7 @@ exports.handler = async (event, context) => {
   if (!name || !email || !message || !recaptchaResponse) {
     return {
       statusCode: 400,
+      headers,
       body: JSON.stringify({ message: 'Please fill in all required fields' })
     };
   }
@@ -47,6 +60,7 @@ exports.handler = async (event, context) => {
   if (!recaptchaVerification.data.success) {
     return {
       statusCode: 400,
+      headers,
       body: JSON.stringify({ message: 'reCAPTCHA verification failed' })
     };
   }
@@ -82,6 +96,7 @@ ${message}
 
   return {
     statusCode: 200,
+    headers,
     body: JSON.stringify({ message: 'Email sent successfully' })
   };
 };
