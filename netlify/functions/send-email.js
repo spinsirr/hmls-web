@@ -20,7 +20,6 @@ exports.handler = async (event, context) => {
   const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
-    'Content-Security-Policy': "frame-ancestors 'self' https://www.google.com",
     'X-Frame-Options': 'SAMEORIGIN'
   };
 
@@ -34,34 +33,14 @@ exports.handler = async (event, context) => {
   }
 
   const data = JSON.parse(event.body);
-  const { name, email, phone, vin, message, 'g-recaptcha-response': recaptchaResponse } = data;
+  const { name, email, phone, vin, message } = data;
 
   // Validate required fields
-  if (!name || !email || !message || !recaptchaResponse) {
+  if (!name || !email || !message) {
     return {
       statusCode: 400,
       headers,
       body: JSON.stringify({ message: 'Please fill in all required fields' })
-    };
-  }
-
-  // Verify reCAPTCHA
-  const recaptchaVerification = await axios.post(
-    'https://www.google.com/recaptcha/api/siteverify',
-    null,
-    {
-      params: {
-        secret: process.env.RECAPTCHA_SECRET_KEY,
-        response: recaptchaResponse
-      }
-    }
-  );
-
-  if (!recaptchaVerification.data.success) {
-    return {
-      statusCode: 400,
-      headers,
-      body: JSON.stringify({ message: 'reCAPTCHA verification failed' })
     };
   }
 
