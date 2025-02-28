@@ -366,16 +366,15 @@
                   required
                 ></textarea>
               </div>
+              <div class="col-12 mb-30px">
+                <div class="g-recaptcha" data-sitekey="6LeW9eQqAAAAAL34rZf0cDJzd-mevJdHyZAa__9v"></div>
+              </div>
               <div class="col-xl-6 col-md-7 last-paragraph-no-margin">
                 <p class="text-center text-md-start fs-15 lh-28">
                   We are committed to protecting your privacy. We will never
                   collect information about you without your explicit consent.
                 </p>
               </div>
-              <div
-                class="g-recaptcha mt-20px mb-10px"
-                data-sitekey="<%= process.env.RECAPTCHA_SITE_KEY %>"
-              ></div>
               <div class="col-xl-6 col-md-5 text-center text-md-end sm-mt-20px">
                 <button
                   class="btn btn-gradient-emerald-blue-emerald-green btn-small btn-round-edge submit"
@@ -501,9 +500,10 @@
     </div>
     <!-- end scroll progress -->
     <!-- javascript libraries -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/vendors.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <!-- Add reCAPTCHA script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </body>
 </html>

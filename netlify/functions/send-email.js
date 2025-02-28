@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const axios = require('axios');
 
 // Create SMTP transporter
 const transporter = nodemailer.createTransport({
@@ -13,6 +14,26 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false
   }
 });
+
+// Verify reCAPTCHA token
+async function verifyRecaptcha(token) {
+  try {
+    const response = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      null,
+      {
+        params: {
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: token
+        }
+      }
+    );
+    return response.data.success;
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error);
+    return false;
+  }
+}
 
 exports.handler = async (event, context) => {
   // Set security headers
@@ -32,7 +53,7 @@ exports.handler = async (event, context) => {
   }
 
   const data = JSON.parse(event.body);
-  const { name, email, phone, vin, message } = data;
+  const { name, email, phone, vin, message, 'g-recaptcha-response': recaptchaToken } = data;
 
   // Validate required fields
   if (!name || !email || !message) {
@@ -40,6 +61,24 @@ exports.handler = async (event, context) => {
       statusCode: 400,
       headers,
       body: JSON.stringify({ message: 'Please fill in all required fields' })
+    };
+  }
+
+  // Verify reCAPTCHA
+  if (!recaptchaToken) {
+    return {
+      statusCode: 400,
+      headers,
+      body: JSON.stringify({ message: 'Please complete the reCAPTCHA verification' })
+    };
+  }
+
+  const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
+  if (!isRecaptchaValid) {
+    return {
+      statusCode: 400,
+      headers,
+      body: JSON.stringify({ message: 'reCAPTCHA verification failed' })
     };
   }
 
