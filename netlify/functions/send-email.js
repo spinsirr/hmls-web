@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const axios = require('axios');
 
 // Create SMTP transporter
 const transporter = nodemailer.createTransport({
