@@ -9,6 +9,9 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD
+  },
+  tls: {
+    rejectUnauthorized: false
   }
 });
 
@@ -51,7 +54,7 @@ exports.handler = async (event, context) => {
 
     // Prepare email content
     const mailOptions = {
-      from: email,
+      from: process.env.SMTP_USER, // Use authenticated sender email
       to: process.env.SMTP_TO_EMAIL,
       replyTo: email,
       subject: 'New Contact Form Submission - HMLS Mobile Mechanic',
