@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <title>Login | HMLS Mobile Mechanic</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="Mobile Mechanic Business" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Login to your HMLS Mobile Mechanic account to access personalized services."
+    />
+    <!-- favicon icon -->
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <!-- google fonts preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- style sheets and font icons -->
+    <link rel="stylesheet" href="css/vendors.min.css" />
+    <link rel="stylesheet" href="css/icon.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/startup.css" />
+    <link rel="stylesheet" href="css/chatbox.css" />
+    <style>
+      .auth-container {
+        max-width: 450px;
+        margin: 0 auto;
+        padding: 40px 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      .auth-form input {
+        margin-bottom: 20px;
+      }
+      .auth-links {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .auth-links a {
+        color: #00c9ff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      .auth-links a:hover {
+        color: #92fe9d;
+      }
+      .auth-separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 30px 0;
+      }
+      .auth-separator::before,
+      .auth-separator::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #eaeaea;
+      }
+      .auth-separator span {
+        padding: 0 10px;
+        color: #777;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body data-mobile-nav-style="classic">
+    <!-- start header -->
+    <header>
+      <!-- start navigation -->
+      <nav
+        class="navbar navbar-expand-lg header-transparent bg-transparent border-bottom border-color-transparent-white-light disable-fixed"
+      >
+        <div
+          class="container-fluid d-flex justify-content-between align-items-center"
+        >
+          <!-- Logo -->
+          <div class="col-auto col-lg-2 d-flex align-items-center">
+            <a class="navbar-brand" href="index.html">
+              <img src="images/Logo White.png" alt="" class="default-logo" />
+              <img src="images/Logo Black.png" alt="" class="alt-logo" />
+              <img src="images/Logomark Black.png" alt="" class="mobile-logo" />
+            </a>
+          </div>
+          <!-- Navbar Links (Centered on large screens) -->
+          <div
+            class="collapse navbar-collapse justify-content-center"
+            id="navbarNav"
+          >
+            <ul
+              class="navbar-nav alt-font d-flex flex-nowrap justify-content-center"
+            >
+              <li class="nav-item">
+                <a href="index.html" class="nav-link">Home</a>
+              </li>
+              <li class="nav-item">
+                <a href="about.html" class="nav-link">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a href="services.html" class="nav-link">Services</a>
+              </li>
+              <li class="nav-item">
+                <a href="contact.html" class="nav-link">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <!-- Call to Action (Phone) on large screens -->
+          <div class="col-auto d-none d-lg-flex text-end align-items-center">
+            <div class="header-icon me-3">
+              <a
+                href="tel:+19493938319"
+                class="search-form-icon header-search-form"
+                aria-label="call"
+              >
+                <i class="feather icon-feather-phone text-white"></i>
+                <span class="d-block text-white">Call Us: (949) 393-8319</span>
+              </a>
+            </div>
+            <div class="header-button">
+              <a href="login.html" class="btn btn-very-small btn-white btn-round-edge">Login</a>
+              <a href="register.html" class="btn btn-very-small btn-gradient-emerald-blue-emerald-green btn-round-edge">Register</a>
+            </div>
+          </div>
+
+          <!-- Mobile Nav Toggle Button (visible on small screens) -->
+          <div class="col-auto d-lg-none">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-line"></span>
+              <span class="navbar-toggler-line"></span>
+              <span class="navbar-toggler-line"></span>
+              <span class="navbar-toggler-line"></span>
+            </button>
+          </div>
+        </div>
+      </nav>
+      <!-- end navigation -->
+    </header>
+    <!-- end header -->
+
+    <!-- start page title -->
+    <section
+      class="page-title-big-typography bg-dark-gray ipad-top-space-margin xs-py-0 cover-background background-position-center-top"
+      style="background-image: url(images/contact-hero.jpg)"
+    >
+      <div class="opacity-extra-medium bg-gradient-black-green"></div>
+      <div class="container">
+        <div class="row align-items-center justify-content-center small-screen">
+          <div
+            class="col-xl-6 col-lg-7 col-sm-8 position-relative text-center page-title-extra-small"
+            data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 400, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'
+          >
+            <div>
+              <h1
+                class="text-uppercase mb-15px alt-font text-white opacity-6 fw-500 ls-2px"
+                data-fancy-text='{ "opacity": [0, 1], "translateY": [50, 0], "filter": ["blur(20px)", "blur(0px)"], "string": ["Login"], "duration": 400, "delay": 0, "speed": 50, "easing": "easeOutQuad" }'
+              ></h1>
+            </div>
+            <h2
+              class="m-auto text-white alt-font text-shadow-double-large fw-700 w-90 xl-w-100"
+              data-fancy-text='{ "opacity": [0, 1], "translateY": [50, 0], "filter": ["blur(20px)", "blur(0px)"], "string": ["Access Your Account"], "duration": 400, "delay": 0, "speed": 50, "easing": "easeOutQuad" }'
+            ></h2>
+          </div>
+          <div
+            class="down-section text-center"
+            data-anime='{ "translateY": [-50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'
+          >
+            <a href="#down-section" class="section-link">
+              <div class="text-white">
+                <i class="line-icon-Down icon-medium"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end page title -->
+
+    <!-- start login section -->
+    <section id="down-section" class="bg-very-light-gray overflow-hidden py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-6">
+            <div class="auth-container">
+              <div class="text-center mb-4">
+                <h3 class="alt-font text-dark-gray fw-600">Welcome Back</h3>
+                <p>Sign in to access your account and manage your vehicle services</p>
+              </div>
+              
+              <form id="login-form" class="auth-form">
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Your email address" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Your password" required>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="remember-me">
+                    <label class="form-check-label" for="remember-me">
+                      Remember me
+                    </label>
+                  </div>
+                  <a href="#" class="text-sm">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-gradient-emerald-blue-emerald-green btn-medium w-100">
+                  Sign In
+                </button>
+              </form>
+              
+              <div class="auth-separator">
+                <span>OR</span>
+              </div>
+              
+              <div class="text-center">
+                <button class="btn btn-outline-dark btn-medium w-100 mb-3">
+                  <i class="fab fa-google me-2"></i> Sign in with Google
+                </button>
+              </div>
+              
+              <div class="auth-links">
+                <p>Don't have an account? <a href="register.html">Register now</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end login section -->
+
+    <!-- start footer -->
+    <footer class="footer-dark bg-dark-gray p-0">
+      <div class="container">
+        <div class="row pt-4 lg-pt-2 sm-pt-45px">
+          <!-- Left: Logo and About -->
+          <div class="col-12 col-md-4 text-md-start text-center mb-4 mb-md-0">
+            <a
+              href="index.html"
+              class="footer-logo mb-20px md-mb-10px d-inline-block"
+              aria-label="logo"
+            >
+              <img
+                src="images/Logomark White.png"
+                alt="HMLS Mobile Mechanic Logo"
+              />
+            </a>
+            <p>
+              Professional mobile auto repair services in Orange County, CA.
+              We bring expert automotive care directly to your location.
+            </p>
+            <div class="elements-social social-icon-style-02 mt-20px">
+              <ul class="small-icon light">
+                <li class="my-0">
+                  <a href="#" target="_blank" aria-label="Facebook"
+                    ><i class="fa-brands fa-facebook-f"></i
+                  ></a>
+                </li>
+                <li class="my-0">
+                  <a href="#" target="_blank" aria-label="Tik-Tok"
+                    ><i class="fa-brands fa-tiktok"></i
+                  ></a>
+                </li>
+                <li class="my-0">
+                  <a href="#" target="_blank" aria-label="Instagram"
+                    ><i class="fa-brands fa-instagram"></i
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Center: Quick Links -->
+          <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
+            <span class="alt-font fw-500 d-block text-white mb-10px"
+              >Quick Links</span
+            >
+            <ul class="list-unstyled">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <!-- Right: Contact -->
+          <div class="col-12 col-md-4 text-md-end text-center">
+            <span class="alt-font fw-500 d-block text-white mb-10px"
+              >Contact Us</span
+            >
+            <ul class="list-unstyled">
+              <li><a href="tel:+19493938319">(949) 393-8319</a></li>
+              <li>
+                <a href="mailto:business@hmls.autos">Email Questions</a
+                ><br />
+                <span class="text-small text-white d-block mt-1">
+                  For general questions. For quotes or repair requests, please
+                  use our
+                  <a
+                    href="contact.html"
+                    class="text-gradient-emerald-blue-emerald-green"
+                    >contact form</a
+                  >.
+                </span>
+              </li>
+            </ul>
+            <div class="mt-3">
+              <a
+                href="contact.html"
+                class="btn btn-small text-white btn-gradient-emerald-blue-emerald-green btn-round-edge"
+              >
+                Schedule Your Repair
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row justify-content-center align-items-center pt-5 sm-pt-35px"
+        >
+          <div class="col-12">
+            <div
+              class="divider-style-03 divider-style-03-01 border-color-transparent-white-light"
+            ></div>
+          </div>
+          <div class="col-12 text-center">
+            <p>&copy; 2024 HMLS Mobile Mechanic. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- end footer -->
+    <!-- start scroll progress -->
+    <div class="scroll-progress d-none d-xxl-block">
+      <a href="#" class="scroll-top" aria-label="scroll">
+        <span class="scroll-text">Scroll</span
+        ><span class="scroll-line"><span class="scroll-point"></span></span>
+      </a>
+    </div>
+    <!-- end scroll progress -->
+    <!-- javascript libraries -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/vendors.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/chatbox.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('login-form');
+        
+        loginForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('password').value;
+          
+          // Here you would typically send the data to your backend
+          console.log('Login attempt:', { email, password });
+          
+          // For demo purposes, show success message
+          alert('Login functionality will be implemented with backend integration.');
+          
+          // Redirect to home page or dashboard
+          // window.location.href = 'index.html';
+        });
+      });
+    </script>
+  </body>
+</html> 
