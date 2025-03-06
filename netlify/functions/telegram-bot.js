@@ -19,7 +19,7 @@ exports.handler = async (event, context) => {
 
   try {
     const data = JSON.parse(event.body);
-    const { message } = data;
+    const { message, page } = data;
 
     if (!message) {
       return {
@@ -42,13 +42,23 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Format the message text
+    const messageText = `New chat message from website:\n\nPage: ${page || 'Unknown'}\n\nMessage: ${message}`;
+
     // Send message to Telegram
     const telegramUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
-    await axios.post(telegramUrl, {
+    
+    console.log(`Sending message to Telegram: ${messageText}`);
+    console.log(`Using URL: ${telegramUrl}`);
+    console.log(`Chat ID: ${telegramChatId}`);
+    
+    const response = await axios.post(telegramUrl, {
       chat_id: telegramChatId,
-      text: message,
+      text: messageText,
       parse_mode: 'HTML'
     });
+    
+    console.log('Telegram API response:', response.data);
 
     return {
       statusCode: 200,
