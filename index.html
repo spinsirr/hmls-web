@@ -24,80 +24,10 @@
     <link rel="stylesheet" href="css/chatbox.css" />
   </head>
   <body data-mobile-nav-style="classic">
-    <!-- start header -->
-    <header>
-      <!-- start navigation -->
-      <nav
-        class="navbar navbar-expand-lg header-transparent bg-transparent border-bottom border-color-transparent-white-light disable-fixed"
-      >
-        <div
-          class="container-fluid d-flex justify-content-between align-items-center"
-        >
-          <!-- Logo -->
-          <div class="col-auto col-lg-2 d-flex align-items-center">
-            <a class="navbar-brand" href="index.html">
-              <img src="images/Logo White.png" alt="" class="default-logo" />
-              <img src="images/Logo Black.png" alt="" class="alt-logo" />
-              <img src="images/Logomark Black.png" alt="" class="mobile-logo" />
-            </a>
-          </div>
-          <!-- Navbar Links (Centered on large screens) -->
-          <div
-            class="collapse navbar-collapse justify-content-center"
-            id="navbarNav"
-          >
-            <ul
-              class="navbar-nav alt-font d-flex flex-nowrap justify-content-center"
-            >
-              <li class="nav-item">
-                <a href="index.html" class="nav-link">Home</a>
-              </li>
-              <li class="nav-item">
-                <a href="about.html" class="nav-link">About Us</a>
-              </li>
-              <li class="nav-item">
-                <a href="services.html" class="nav-link">Services</a>
-              </li>
-              <li class="nav-item">
-                <a href="contact.html" class="nav-link">Contact</a>
-              </li>
-            </ul>
-          </div>
-          <!-- Call to Action (Phone) on large screens -->
-          <div class="col-auto d-none d-lg-flex text-end align-items-center">
-            <div class="header-icon">
-              <a
-                href="tel:+19493938319"
-                class="search-form-icon header-search-form"
-                aria-label="call"
-              >
-                <i class="feather icon-feather-phone text-white"></i>
-                <span class="d-block text-white">Call Us: (949) 393-8319</span>
-              </a>
-            </div>
-          </div>
-          <!-- Mobile Nav Toggle Button (visible on small screens) -->
-          <div class="col-auto d-lg-none">
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-line"></span>
-              <span class="navbar-toggler-line"></span>
-              <span class="navbar-toggler-line"></span>
-              <span class="navbar-toggler-line"></span>
-            </button>
-          </div>
-        </div>
-      </nav>
-      <!-- end navigation -->
-    </header>
+    <!-- Navigation container -->
+    <div id="nav-container"></div>
 
-    <!-- end header -->
+    <!-- Your page content -->
     <!-- start hero section -->
     <section class="p-0 bg-dark-gray" style="height: 100vh">
       <div
@@ -608,102 +538,8 @@
       </div>
     </section>
 
-    <footer class="footer-dark bg-dark-gray p-0">
-      <div class="container">
-        <div class="row pt-4 lg-pt-2 sm-pt-45px">
-          <!-- Left: Logo and About -->
-          <div class="col-12 col-md-4 text-md-start text-center mb-4 mb-md-0">
-            <a
-              href="index.html"
-              class="footer-logo mb-20px md-mb-10px d-inline-block"
-              aria-label="logo"
-            >
-              <img
-                src="images/Logomark White.png"
-                alt="HMLS Auto Service Logo"
-              />
-            </a>
-            <p>
-              Professional mobile auto repair services in Orange County, CA.
-              We bring expert automotive care directly to your location.
-            </p>
-            <div class="elements-social social-icon-style-02 mt-20px">
-              <ul class="small-icon light">
-                <li class="my-0">
-                  <a href="#" target="_blank" aria-label="Facebook"
-                    ><i class="fa-brands fa-facebook-f"></i
-                  ></a>
-                </li>
-                <li class="my-0">
-                  <a href="#" target="_blank" aria-label="Tik-Tok"
-                    ><i class="fa-brands fa-tiktok"></i
-                  ></a>
-                </li>
-                <li class="my-0">
-                  <a href="#" target="_blank" aria-label="Instagram"
-                    ><i class="fa-brands fa-instagram"></i
-                  ></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- Center: Quick Links -->
-          <div class="col-12 col-md-4 text-center mb-4 mb-md-0">
-            <span class="alt-font fw-500 d-block text-white mb-10px"
-              >Quick Links</span
-            >
-            <ul class="list-unstyled">
-              <li><a href="index.html">Home</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-          <!-- Right: Contact -->
-          <div class="col-12 col-md-4 text-md-end text-center">
-            <span class="alt-font fw-500 d-block text-white mb-10px"
-              >Contact Us</span
-            >
-            <ul class="list-unstyled">
-              <li><a href="tel:+19493938319">(949) 393-8319</a></li>
-              <li>
-                <a href="mailto:business@hmls.autos">Email Questions</a>
-                <br />
-                <span class="text-small text-white d-block mt-1">
-                  For general questions. For quotes or repair requests, please
-                  use our
-                  <a
-                    href="contact.html"
-                    class="text-gradient-emerald-blue-emerald-green"
-                    >contact form</a
-                  >.
-                </span>
-              </li>
-            </ul>
-            <div class="mt-3">
-              <a
-                href="contact.html"
-                class="btn btn-small text-white btn-gradient-emerald-blue-emerald-green btn-round-edge"
-              >
-                Schedule Your Repair
-              </a>
-            </div>
-          </div>
-        </div>
-        <div
-          class="row justify-content-center align-items-center pt-5 sm-pt-35px"
-        >
-          <div class="col-12">
-            <div
-              class="divider-style-03 divider-style-03-01 border-color-transparent-white-light"
-            ></div>
-          </div>
-          <div class="col-12 text-center">
-            <p>&copy; 2024 HMLS Auto Service. All rights reserved.</p>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <!-- Footer container -->
+    <div id="footer-container"></div>
 
     <!-- start scroll progress -->
     <div class="scroll-progress d-none d-xxl-block">
@@ -714,9 +550,11 @@
     </div>
     <!-- end scroll progress -->
 
+    <!-- javascript libraries -->
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/vendors.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/chatbox.js"></script>
+    <script type="text/javascript" src="js/components.js"></script>
   </body>
 </html>
