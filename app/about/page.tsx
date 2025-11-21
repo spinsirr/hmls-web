@@ -1,0 +1,116 @@
+"use client";
+
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
+import { Award, Heart, UserCheck, Wrench } from "lucide-react";
+
+export default function About() {
+  return (
+    <main className="flex min-h-screen flex-col items-center bg-black text-white selection:bg-emerald-500 selection:text-black overflow-x-hidden">
+      <Navbar />
+
+      {/* Background Effects */}
+      <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/10 rounded-full blur-[120px] animate-pulse delay-1000" />
+      </div>
+
+      <section className="w-full max-w-7xl px-6 pt-32 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-3xl"
+        >
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs tracking-widest uppercase">
+            About Us
+          </div>
+          <h1 className="text-5xl md:text-7xl font-thin mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+            Personalized Auto Care with <br />
+            <span className="text-emerald-500">20+ Years of Expertise.</span>
+          </h1>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass-panel p-8 rounded-2xl border border-emerald-500/20"
+          >
+            <h3 className="text-2xl font-light mb-6">The HMLS Story</h3>
+            <p className="text-gray-400 font-light leading-relaxed mb-6">
+              Hi, I&apos;m the founder of HMLS Mobile Mechanic. With over 20 years of hands-on experience, 
+              including time at Fortune 100 dealerships, I&apos;ve seen it all.
+            </p>
+            <p className="text-gray-400 font-light leading-relaxed mb-6">
+              I started this business to give Orange County a better, more personalized alternative to 
+              traditional auto repair shops. My aim is to deliver exceptional care for your vehicle 
+              without the high overhead costs or the impersonal service you&apos;d find at a dealership.
+            </p>
+            <p className="text-gray-400 font-light leading-relaxed">
+              Whether it&apos;s routine maintenance or complex diagnostics, I&apos;ll make sure your car gets 
+              the attention it deserves right at your driveway.
+            </p>
+          </motion.div>
+
+          <div className="space-y-8">
+            {[
+              {
+                title: "Our Mission",
+                desc: "We deliver convenient, affordable, and high-quality auto repair services to keep your vehicle running smoothly.",
+                icon: <Wrench className="w-6 h-6 text-emerald-500" />
+              },
+              {
+                title: "Our Vision",
+                desc: "To become the trusted go-to mobile mechanic for stress-free, reliable, and expert automotive care in Orange County.",
+                icon: <UserCheck className="w-6 h-6 text-emerald-500" />
+              },
+              {
+                title: "Core Values",
+                desc: "Honesty, dedication, and customer satisfaction are the driving forces behind every repair we perform.",
+                icon: <Heart className="w-6 h-6 text-emerald-500" />
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+                className="flex gap-4 items-start"
+              >
+                <div className="shrink-0 w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                  {item.icon}
+                </div>
+                <div>
+                  <h4 className="text-xl font-medium text-white mb-2">{item.title}</h4>
+                  <p className="text-gray-400 font-light text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-24">
+           {[
+             { label: "Friendly Support", desc: "Responsive communication" },
+             { label: "Expertise", desc: "Dealer-quality service" },
+             { label: "Flexibility", desc: "Tailored to your schedule" },
+             { label: "Affordable", desc: "No shop overhead costs" }
+           ].map((stat, i) => (
+             <div key={i} className="glass-panel p-6 rounded-xl text-center">
+               <div className="text-emerald-400 font-medium mb-2">{stat.label}</div>
+               <div className="text-xs text-gray-500">{stat.desc}</div>
+             </div>
+           ))}
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  );
+}
+
