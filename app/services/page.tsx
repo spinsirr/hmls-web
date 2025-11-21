@@ -1,27 +1,17 @@
-"use client";
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
+import Background from "@/components/Background";
 import { Battery, Car, Cog, Gauge, ShieldCheck, Thermometer, Wrench } from "lucide-react";
+import { FadeIn, ScaleIn } from "@/components/ui/Animations";
 
 export default function Services() {
   return (
     <main className="flex min-h-screen flex-col items-center bg-black text-white selection:bg-emerald-500 selection:text-black overflow-x-hidden">
       <Navbar />
-
-      {/* Background Effects */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse" />
-      </div>
+      <Background />
 
       <section className="w-full max-w-7xl px-6 pt-32 pb-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-3xl mb-20"
-        >
+        <FadeIn className="max-w-3xl mb-20">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs tracking-widest uppercase">
             Our Services
           </div>
@@ -32,7 +22,7 @@ export default function Services() {
           <p className="text-xl text-gray-400 font-light max-w-2xl">
             From routine maintenance to complex engine work, we handle it all with laboratory precision right at your location.
           </p>
-        </motion.div>
+        </FadeIn>
 
         {/* Value Props */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
@@ -53,18 +43,15 @@ export default function Services() {
               desc: "Regular maintenance prevents costly future repairs, keeping your car in top condition for longer."
             }
           ].map((item, i) => (
-             <motion.div
+             <FadeIn
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
+              delay={i * 0.2}
               className="glass-panel p-8 rounded-2xl relative group hover:border-emerald-500/30 transition-colors"
             >
               <div className="text-sm text-emerald-500 font-medium mb-4">{item.step}</div>
               <h4 className="text-xl font-medium mb-3">{item.title}</h4>
               <p className="text-gray-400 font-light leading-relaxed">{item.desc}</p>
-            </motion.div>
+            </FadeIn>
           ))}
         </div>
 
@@ -108,12 +95,9 @@ export default function Services() {
                 icon: <Wrench className="w-6 h-6" />
               }
             ].map((service, i) => (
-              <motion.div
+              <ScaleIn
                 key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                delay={i * 0.1}
                 className="p-8 rounded-2xl border border-white/5 hover:border-emerald-500/30 hover:bg-white/[0.02] transition-all group cursor-default flex flex-col"
               >
                 <div className="mb-6 w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:text-emerald-400 transition-colors">
@@ -123,7 +107,7 @@ export default function Services() {
                 <p className="text-sm text-gray-400 font-light leading-relaxed">
                   {service.desc}
                 </p>
-              </motion.div>
+              </ScaleIn>
             ))}
           </div>
       </section>
@@ -132,4 +116,3 @@ export default function Services() {
     </main>
   );
 }
-
