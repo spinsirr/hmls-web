@@ -44,10 +44,13 @@ export default function About() {
               </p>
             </FadeIn>
 
-             {/* Image Grid */}
-             <FadeIn direction="up" className="grid grid-cols-2 gap-4 h-64">
-                <PlaceholderImage className="rounded-2xl h-full" label="Founder Portrait" />
-                <PlaceholderImage className="rounded-2xl h-full" label="Working on Engine" />
+             {/* Image - Replaced Grid with Single Image */}
+             <FadeIn direction="up" className="h-64 rounded-2xl overflow-hidden border border-white/10">
+                <img 
+                  src="https://images.unsplash.com/photo-1530046339160-7116568700ed?auto=format&fit=crop&q=80" 
+                  alt="Mechanic working on engine"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
              </FadeIn>
           </div>
 
@@ -86,7 +89,11 @@ export default function About() {
             ))}
             
             <FadeIn direction="right" delay={0.6} className="relative h-80 rounded-2xl overflow-hidden glass-panel border-white/5 mt-8">
-               <PlaceholderImage className="w-full h-full" label="Mechanic Tools" />
+               <img 
+                  src="https://images.unsplash.com/photo-1586765501019-78169dd5d171?auto=format&fit=crop&q=80" 
+                  alt="Mechanic tools"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
             </FadeIn>
           </div>
         </div>

@@ -26,7 +26,11 @@ export default function Services() {
             </p>
           </FadeIn>
           <ScaleIn className="flex-1 h-[400px] rounded-3xl overflow-hidden glass-panel border-emerald-500/20">
-            <PlaceholderImage className="w-full h-full" label="Mobile Workshop Van" />
+            <img 
+              src="https://images.unsplash.com/photo-1632823471565-1ec2a125d1d1?auto=format&fit=crop&q=80" 
+              alt="Mobile workshop van"
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+            />
           </ScaleIn>
         </div>
 

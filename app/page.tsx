@@ -92,11 +92,19 @@ export default function Home() {
           
           <div className="relative">
             <ScaleIn className="relative h-[500px] rounded-2xl overflow-hidden glass-panel border-emerald-500/20 z-10">
-               <PlaceholderImage className="w-full h-full" label="Mechanic Working on Car" />
+               <img 
+                  src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80" 
+                  alt="Mechanic working on car"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+               />
             </ScaleIn>
             {/* Decorative offset image */}
             <div className="absolute -bottom-8 -right-8 w-2/3 h-64 rounded-2xl overflow-hidden border border-white/10 bg-black z-20 shadow-2xl">
-               <PlaceholderImage className="w-full h-full" label="Engine Detail Shot" />
+               <img 
+                  src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80" 
+                  alt="Engine detail"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+               />
             </div>
           </div>
         </div>
@@ -237,7 +245,11 @@ export default function Home() {
         <FadeIn className="max-w-4xl mx-auto glass-panel p-12 md:p-20 rounded-[2rem] border-emerald-500/20 text-center relative overflow-hidden">
           {/* Background image for CTA */}
           <div className="absolute inset-0 opacity-20">
-             <PlaceholderImage className="w-full h-full" label="Workshop Background" />
+             <img 
+                src="https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&q=80" 
+                alt="Workshop background"
+                className="w-full h-full object-cover"
+             />
           </div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/80 via-black/60 to-black/80 pointer-events-none" />
           
