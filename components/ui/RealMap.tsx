@@ -31,9 +31,9 @@ interface MapProps {
   className?: string;
 }
 
-// Center of Orange County
+// Centered on Orange County
 const CENTER: [number, number] = [33.7175, -117.8311]; // Near Irvine/Tustin
-const ZOOM = 11;
+const ZOOM = 9;
 
 export default function RealMap({ className = "" }: MapProps) {
   const [isMounted, setIsMounted] = useState(false);
@@ -92,29 +92,24 @@ export default function RealMap({ className = "" }: MapProps) {
           opacity={0.8}
         />
         
-        {/* Service Area Circle - Removed as requested */}
-        {/* <Circle 
-          center={CENTER}
-          radius={15000} // 15km radius
-          pathOptions={{ 
-            color: '#10b981', 
-            fillColor: '#10b981', 
-            fillOpacity: 0.05,
-            weight: 1,
-            dashArray: '5, 10'
-          }} 
-        /> */}
-
-        {/* Markers for key cities */}
+        {/* Markers for key cities across LA and OC */}
         {[
+            // Orange County
             { name: "Irvine", coords: [33.6846, -117.8265] },
             { name: "Santa Ana", coords: [33.7455, -117.8677] },
             { name: "Newport Beach", coords: [33.6189, -117.9289] },
             { name: "Anaheim", coords: [33.8366, -117.9143] },
             { name: "Huntington Beach", coords: [33.6595, -117.9988] },
-            { name: "Costa Mesa", coords: [33.6412, -117.9188] },
-            { name: "Orange", coords: [33.7879, -117.8531] },
+            { name: "Lake Forest", coords: [33.6469, -117.6892] },
             { name: "Mission Viejo", coords: [33.6000, -117.6720] },
+            
+            // Los Angeles Area
+            { name: "Los Angeles", coords: [34.0522, -118.2437] },
+            { name: "Santa Monica", coords: [34.0195, -118.4912] },
+            { name: "Long Beach", coords: [33.7701, -118.1937] },
+            { name: "Pasadena", coords: [34.1478, -118.1445] },
+            { name: "Glendale", coords: [34.1425, -118.2470] },
+            { name: "Beverly Hills", coords: [34.0736, -118.4004] },
         ].map((city, idx) => (
             <Marker 
                 key={idx} 
