@@ -102,14 +102,10 @@ export default function RealMap({ className = "" }: MapProps) {
             { name: "Huntington Beach", coords: [33.6595, -117.9988] },
             { name: "Lake Forest", coords: [33.6469, -117.6892] },
             { name: "Mission Viejo", coords: [33.6000, -117.6720] },
-            
             // Los Angeles Area
             { name: "Los Angeles", coords: [34.0522, -118.2437] },
-            { name: "Santa Monica", coords: [34.0195, -118.4912] },
             { name: "Long Beach", coords: [33.7701, -118.1937] },
-            { name: "Pasadena", coords: [34.1478, -118.1445] },
-            { name: "Glendale", coords: [34.1425, -118.2470] },
-            { name: "Beverly Hills", coords: [34.0736, -118.4004] },
+
         ].map((city, idx) => (
             <Marker 
                 key={idx} 
