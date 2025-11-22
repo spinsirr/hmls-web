@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Background from "@/components/Background";
 import { Battery, Car, Cog, Gauge, ShieldCheck, Thermometer, Wrench } from "lucide-react";
 import { FadeIn, ScaleIn } from "@/components/ui/Animations";
+import PlaceholderImage from "@/components/ui/PlaceholderImage";
 
 export default function Services() {
   return (
@@ -11,18 +12,23 @@ export default function Services() {
       <Background />
 
       <section className="w-full max-w-7xl px-6 pt-32 pb-20">
-        <FadeIn className="max-w-3xl mb-20">
-          <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs tracking-widest uppercase">
-            Our Services
-          </div>
-          <h1 className="text-5xl md:text-7xl font-thin mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-            Comprehensive Care for <br />
-            <span className="text-emerald-500">Your Vehicle.</span>
-          </h1>
-          <p className="text-xl text-gray-400 font-light max-w-2xl">
-            From routine maintenance to complex engine work, we handle it all with laboratory precision right at your location.
-          </p>
-        </FadeIn>
+        <div className="flex flex-col lg:flex-row gap-16 mb-24">
+          <FadeIn className="flex-1">
+            <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs tracking-widest uppercase">
+              Our Services
+            </div>
+            <h1 className="text-5xl md:text-7xl font-thin mb-8 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+              Comprehensive Care for <br />
+              <span className="text-emerald-500">Your Vehicle.</span>
+            </h1>
+            <p className="text-xl text-gray-400 font-light max-w-xl">
+              From routine maintenance to complex engine work, we handle it all with laboratory precision right at your location.
+            </p>
+          </FadeIn>
+          <ScaleIn className="flex-1 h-[400px] rounded-3xl overflow-hidden glass-panel border-emerald-500/20">
+            <PlaceholderImage className="w-full h-full" label="Mobile Workshop Van" />
+          </ScaleIn>
+        </div>
 
         {/* Value Props */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">

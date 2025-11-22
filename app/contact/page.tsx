@@ -4,6 +4,7 @@ import Background from "@/components/Background";
 import { Mail, MapPin, Phone } from "lucide-react";
 import ContactForm from "@/components/sections/ContactForm";
 import { FadeIn } from "@/components/ui/Animations";
+import RealMap from "@/components/ui/RealMap";
 
 export default function Contact() {
   return (
@@ -27,7 +28,7 @@ export default function Contact() {
               We come to you anywhere in Orange County.
             </p>
 
-            <div className="space-y-8">
+            <div className="space-y-8 mb-12">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-emerald-500">
                   <MapPin className="w-5 h-5" />
@@ -57,6 +58,10 @@ export default function Contact() {
                   <div className="text-lg font-medium">contact@hmls.com</div>
                 </div>
               </div>
+            </div>
+
+            <div className="w-full h-64 rounded-2xl overflow-hidden glass-panel border-emerald-500/20 relative group">
+               <RealMap className="w-full h-full" />
             </div>
           </FadeIn>
 

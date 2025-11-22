@@ -12,6 +12,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Background from "@/components/Background";
 import HomeHero from "@/components/sections/HomeHero";
+import PlaceholderImage from "@/components/ui/PlaceholderImage";
+import RealMap from "@/components/ui/RealMap";
 import { FadeIn, ScaleIn, StaggerContainer } from "@/components/ui/Animations";
 
 export default function Home() {
@@ -88,18 +90,15 @@ export default function Home() {
             </Link>
           </FadeIn>
           
-          <ScaleIn className="relative h-[600px] rounded-2xl overflow-hidden glass-panel border-emerald-500/20">
-             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent" />
-             <div className="absolute inset-0 flex items-center justify-center">
-               <div className="text-center">
-                 <div className="w-24 h-24 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-6 animate-pulse">
-                   <Award className="w-12 h-12 text-emerald-500" />
-                 </div>
-                 <h4 className="text-2xl font-light text-white mb-2">100% Satisfaction</h4>
-                 <p className="text-gray-400 text-sm">Guaranteed Quality Service</p>
-               </div>
-             </div>
-          </ScaleIn>
+          <div className="relative">
+            <ScaleIn className="relative h-[500px] rounded-2xl overflow-hidden glass-panel border-emerald-500/20 z-10">
+               <PlaceholderImage className="w-full h-full" label="Mechanic Working on Car" />
+            </ScaleIn>
+            {/* Decorative offset image */}
+            <div className="absolute -bottom-8 -right-8 w-2/3 h-64 rounded-2xl overflow-hidden border border-white/10 bg-black z-20 shadow-2xl">
+               <PlaceholderImage className="w-full h-full" label="Engine Detail Shot" />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -227,20 +226,8 @@ export default function Home() {
             </div>
           </FadeIn>
           
-          <FadeIn direction="right" className="flex-1 w-full aspect-video glass-panel rounded-2xl overflow-hidden relative group">
-            {/* Abstract Map Visual */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-900/40 via-black to-black" />
-            
-            <div className="absolute inset-0 opacity-30 bg-[linear-gradient(rgba(16,185,129,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.1)_1px,transparent_1px)] bg-[size:40px_40px]" />
-            
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
-              <MapPin className="w-12 h-12 text-emerald-500 mb-2 animate-bounce" />
-              <span className="text-2xl font-light tracking-widest">OC, CALIFORNIA</span>
-            </div>
-
-            {/* Animated Radar Effect */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-emerald-500/20 rounded-full animate-[ping_3s_linear_infinite]" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 border border-emerald-500/20 rounded-full animate-[ping_3s_linear_infinite_1s]" />
+          <FadeIn direction="right" className="flex-1 w-full h-[400px] glass-panel rounded-2xl overflow-hidden relative group border border-emerald-500/20">
+            <RealMap className="w-full h-full" />
           </FadeIn>
         </div>
       </section>
@@ -248,7 +235,11 @@ export default function Home() {
       {/* CTA Section */}
       <section className="w-full px-6 py-24">
         <FadeIn className="max-w-4xl mx-auto glass-panel p-12 md:p-20 rounded-[2rem] border-emerald-500/20 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-emerald-500/5 to-transparent pointer-events-none" />
+          {/* Background image for CTA */}
+          <div className="absolute inset-0 opacity-20">
+             <PlaceholderImage className="w-full h-full" label="Workshop Background" />
+          </div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/80 via-black/60 to-black/80 pointer-events-none" />
           
           <h2 className="text-4xl md:text-5xl font-thin mb-6 relative z-10">Ready for the Future?</h2>
           <p className="text-gray-400 font-light mb-10 text-lg max-w-xl mx-auto relative z-10">

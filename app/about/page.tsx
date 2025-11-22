@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Background from "@/components/Background";
 import { Award, Heart, UserCheck, Wrench } from "lucide-react";
 import { FadeIn } from "@/components/ui/Animations";
+import PlaceholderImage from "@/components/ui/PlaceholderImage";
 
 export default function About() {
   return (
@@ -21,26 +22,34 @@ export default function About() {
           </h1>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16">
-          <FadeIn 
-            direction="left"
-            className="glass-panel p-8 rounded-2xl border border-emerald-500/20"
-          >
-            <h3 className="text-2xl font-light mb-6">The HMLS Story</h3>
-            <p className="text-gray-400 font-light leading-relaxed mb-6">
-              Hi, I&apos;m the founder of HMLS Mobile Mechanic. With over 20 years of hands-on experience, 
-              including time at Fortune 100 dealerships, I&apos;ve seen it all.
-            </p>
-            <p className="text-gray-400 font-light leading-relaxed mb-6">
-              I started this business to give Orange County a better, more personalized alternative to 
-              traditional auto repair shops. My aim is to deliver exceptional care for your vehicle 
-              without the high overhead costs or the impersonal service you&apos;d find at a dealership.
-            </p>
-            <p className="text-gray-400 font-light leading-relaxed">
-              Whether it&apos;s routine maintenance or complex diagnostics, I&apos;ll make sure your car gets 
-              the attention it deserves right at your driveway.
-            </p>
-          </FadeIn>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16 items-start">
+          <div className="space-y-8">
+             <FadeIn 
+              direction="left"
+              className="glass-panel p-8 rounded-2xl border border-emerald-500/20"
+            >
+              <h3 className="text-2xl font-light mb-6">The HMLS Story</h3>
+              <p className="text-gray-400 font-light leading-relaxed mb-6">
+                Hi, I&apos;m the founder of HMLS Mobile Mechanic. With over 20 years of hands-on experience, 
+                including time at Fortune 100 dealerships, I&apos;ve seen it all.
+              </p>
+              <p className="text-gray-400 font-light leading-relaxed mb-6">
+                I started this business to give Orange County a better, more personalized alternative to 
+                traditional auto repair shops. My aim is to deliver exceptional care for your vehicle 
+                without the high overhead costs or the impersonal service you&apos;d find at a dealership.
+              </p>
+              <p className="text-gray-400 font-light leading-relaxed">
+                Whether it&apos;s routine maintenance or complex diagnostics, I&apos;ll make sure your car gets 
+                the attention it deserves right at your driveway.
+              </p>
+            </FadeIn>
+
+             {/* Image Grid */}
+             <FadeIn direction="up" className="grid grid-cols-2 gap-4 h-64">
+                <PlaceholderImage className="rounded-2xl h-full" label="Founder Portrait" />
+                <PlaceholderImage className="rounded-2xl h-full" label="Working on Engine" />
+             </FadeIn>
+          </div>
 
           <div className="space-y-8">
             {[
@@ -75,6 +84,10 @@ export default function About() {
                 </div>
               </FadeIn>
             ))}
+            
+            <FadeIn direction="right" delay={0.6} className="relative h-80 rounded-2xl overflow-hidden glass-panel border-white/5 mt-8">
+               <PlaceholderImage className="w-full h-full" label="Mechanic Tools" />
+            </FadeIn>
           </div>
         </div>
 
