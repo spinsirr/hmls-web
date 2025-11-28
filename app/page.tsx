@@ -94,7 +94,7 @@ export default function Home() {
           <div className="relative">
             <ScaleIn className="relative h-[500px] rounded-2xl overflow-hidden glass-panel border-emerald-500/20 z-10">
               <Image
-                src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80"
+                src="/images/engine-bay.png"
                 alt="Mechanic working on car"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -104,7 +104,7 @@ export default function Home() {
             {/* Decorative offset image */}
             <div className="absolute -bottom-8 -right-8 w-2/3 h-64 rounded-2xl overflow-hidden border border-white/10 bg-black z-20 shadow-2xl">
               <Image
-                src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80"
+                src="/images/dipstick.png"
                 alt="Engine detail"
                 fill
                 sizes="33vw"
@@ -284,7 +284,7 @@ export default function Home() {
           {/* Background image for CTA */}
           <div className="absolute inset-0 opacity-20">
             <Image
-              src="https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&q=80"
+              src="/images/oil-pan.png"
               alt="Workshop background"
               fill
               sizes="100vw"

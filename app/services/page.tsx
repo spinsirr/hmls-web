@@ -36,7 +36,7 @@ export default function Services() {
           </FadeIn>
           <ScaleIn className="relative flex-1 h-[400px] rounded-3xl overflow-hidden glass-panel border-emerald-500/20">
             <Image
-              src="https://images.unsplash.com/photo-1632823471565-1ec2a125d1d1?auto=format&fit=crop&q=80"
+              src="/images/vacuum-pump.png"
               alt="Mobile workshop van"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

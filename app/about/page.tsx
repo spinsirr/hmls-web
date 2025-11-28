@@ -54,7 +54,7 @@ export default function About() {
               className="relative h-64 rounded-2xl overflow-hidden border border-white/10"
             >
               <Image
-                src="https://images.unsplash.com/photo-1530046339160-7116568700ed?auto=format&fit=crop&q=80"
+                src="/images/engine-bay-mercedes.png"
                 alt="Mechanic working on engine"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -107,7 +107,7 @@ export default function About() {
               className="relative h-80 rounded-2xl overflow-hidden glass-panel border-white/5 mt-8"
             >
               <Image
-                src="https://images.unsplash.com/photo-1586765501019-78169dd5d171?auto=format&fit=crop&q=80"
+                src="/images/brake-pads.png"
                 alt="Mechanic tools"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
