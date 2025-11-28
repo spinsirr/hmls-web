@@ -1,31 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import type * as L from "leaflet";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
-import { MapPin } from "lucide-react";
 
 // Leaflet components must be dynamically imported to avoid SSR issues
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
-  { ssr: false }
+  { ssr: false },
 );
 const TileLayer = dynamic(
   () => import("react-leaflet").then((mod) => mod.TileLayer),
-  { ssr: false }
+  { ssr: false },
 );
 const Marker = dynamic(
   () => import("react-leaflet").then((mod) => mod.Marker),
-  { ssr: false }
+  { ssr: false },
 );
-const Popup = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Popup),
-  { ssr: false }
-);
-const Circle = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Circle),
-  { ssr: false }
-);
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
+  ssr: false,
+});
 
 interface MapProps {
   className?: string;
@@ -37,28 +32,34 @@ const ZOOM = 9;
 
 export default function RealMap({ className = "" }: MapProps) {
   const [isMounted, setIsMounted] = useState(false);
-  const [Leaflet, setLeaflet] = useState<any>(null);
+  const [Leaflet, setLeaflet] = useState<typeof L | null>(null);
 
   useEffect(() => {
     (async () => {
-        const L = await import("leaflet");
-        setLeaflet(L);
-        
-        // Fix Leaflet's default icon path issues
-        delete (L.Icon.Default.prototype as any)._getIconUrl;
-        L.Icon.Default.mergeOptions({
-          iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        });
-        
-        setIsMounted(true);
+      const leaflet = await import("leaflet");
+      setLeaflet(leaflet);
+
+      // Fix Leaflet's default icon path issues
+      delete (leaflet.Icon.Default.prototype as { _getIconUrl?: string })
+        ._getIconUrl;
+      leaflet.Icon.Default.mergeOptions({
+        iconRetinaUrl:
+          "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+        iconUrl:
+          "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+        shadowUrl:
+          "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+      });
+
+      setIsMounted(true);
     })();
   }, []);
 
   if (!isMounted || !Leaflet) {
     return (
-      <div className={`w-full h-full bg-black/40 flex items-center justify-center ${className}`}>
+      <div
+        className={`w-full h-full bg-black/40 flex items-center justify-center ${className}`}
+      >
         <div className="text-emerald-500 animate-pulse">Loading Map...</div>
       </div>
     );
@@ -75,12 +76,14 @@ export default function RealMap({ className = "" }: MapProps) {
   };
 
   return (
-    <div className={`relative w-full h-full overflow-hidden rounded-2xl ${className}`}>
-       {/* @ts-ignore - Types for react-leaflet dynamic imports can be tricky */}
-      <MapContainer 
-        center={CENTER} 
-        zoom={ZOOM} 
-        scrollWheelZoom={false} 
+    <div
+      className={`relative w-full h-full overflow-hidden rounded-2xl ${className}`}
+    >
+      {/* @ts-ignore - Types for react-leaflet dynamic imports can be tricky */}
+      <MapContainer
+        center={CENTER}
+        zoom={ZOOM}
+        scrollWheelZoom={false}
         className="w-full h-full z-0"
         zoomControl={false}
         attributionControl={false}
@@ -91,47 +94,47 @@ export default function RealMap({ className = "" }: MapProps) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           opacity={0.8}
         />
-        
+
         {/* Markers for key cities across LA and OC */}
         {[
-            // Orange County
-            { name: "Irvine", coords: [33.6846, -117.8265] },
-            { name: "Santa Ana", coords: [33.7455, -117.8677] },
-            { name: "Newport Beach", coords: [33.6189, -117.9289] },
-            { name: "Anaheim", coords: [33.8366, -117.9143] },
-            { name: "Huntington Beach", coords: [33.6595, -117.9988] },
-            { name: "Lake Forest", coords: [33.6469, -117.6892] },
-            { name: "Mission Viejo", coords: [33.6000, -117.6720] },
-            // Los Angeles Area
-            { name: "Los Angeles", coords: [34.0522, -118.2437] },
-            { name: "Long Beach", coords: [33.7701, -118.1937] },
-
-        ].map((city, idx) => (
-            <Marker 
-                key={idx} 
-                position={city.coords as [number, number]} 
-                icon={createCustomIcon()}
-            >
-                <Popup className="custom-popup">
-                    <div className="text-black font-medium text-sm">{city.name}</div>
-                    <div className="text-xs text-gray-600">Mobile Service Available</div>
-                </Popup>
-            </Marker>
+          // Orange County
+          { name: "Irvine", coords: [33.6846, -117.8265] },
+          { name: "Santa Ana", coords: [33.7455, -117.8677] },
+          { name: "Newport Beach", coords: [33.6189, -117.9289] },
+          { name: "Anaheim", coords: [33.8366, -117.9143] },
+          { name: "Huntington Beach", coords: [33.6595, -117.9988] },
+          { name: "Lake Forest", coords: [33.6469, -117.6892] },
+          { name: "Mission Viejo", coords: [33.6, -117.672] },
+          // Los Angeles Area
+          { name: "Los Angeles", coords: [34.0522, -118.2437] },
+          { name: "Long Beach", coords: [33.7701, -118.1937] },
+        ].map((city) => (
+          <Marker
+            key={city.name}
+            position={city.coords as [number, number]}
+            icon={createCustomIcon()}
+          >
+            <Popup className="custom-popup">
+              <div className="text-black font-medium text-sm">{city.name}</div>
+              <div className="text-xs text-gray-600">
+                Mobile Service Available
+              </div>
+            </Popup>
+          </Marker>
         ))}
-
       </MapContainer>
 
       {/* UI Overlays to match the requested design */}
-      
+
       {/* 1. Grid Overlay */}
       <div className="absolute inset-0 pointer-events-none z-[400] opacity-20 bg-[linear-gradient(rgba(16,185,129,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.1)_1px,transparent_1px)] bg-[size:40px_40px]" />
-      
+
       {/* 2. Border Overlay */}
       <div className="absolute inset-0 pointer-events-none border border-emerald-500/20 rounded-2xl z-[400]" />
-      
+
       {/* 3. Live Coverage Label */}
       <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/80 border border-white/10 rounded text-[10px] text-emerald-500/80 font-mono uppercase tracking-widest backdrop-blur-sm z-[400]">
-         Live Coverage Map
+        Live Coverage Map
       </div>
     </div>
   );

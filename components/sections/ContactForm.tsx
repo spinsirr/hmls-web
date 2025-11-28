@@ -14,32 +14,46 @@ export default function ContactForm() {
       <form className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm text-gray-400 ml-1">First Name</label>
-            <input 
-              type="text" 
+            <label htmlFor="firstName" className="text-sm text-gray-400 ml-1">
+              First Name
+            </label>
+            <input
+              id="firstName"
+              type="text"
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-emerald-500/50 text-white transition-colors"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm text-gray-400 ml-1">Last Name</label>
-            <input 
-              type="text" 
+            <label htmlFor="lastName" className="text-sm text-gray-400 ml-1">
+              Last Name
+            </label>
+            <input
+              id="lastName"
+              type="text"
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-emerald-500/50 text-white transition-colors"
             />
           </div>
         </div>
-        
+
         <div className="space-y-2">
-          <label className="text-sm text-gray-400 ml-1">Email</label>
-          <input 
-            type="email" 
+          <label htmlFor="email" className="text-sm text-gray-400 ml-1">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-emerald-500/50 text-white transition-colors"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-400 ml-1">Service Needed</label>
-          <select className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-emerald-500/50 text-white transition-colors [&>option]:bg-black">
+          <label htmlFor="service" className="text-sm text-gray-400 ml-1">
+            Service Needed
+          </label>
+          <select
+            id="service"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-emerald-500/50 text-white transition-colors [&>option]:bg-black"
+          >
             <option>General Diagnostics</option>
             <option>Oil Change</option>
             <option>Brakes</option>
@@ -49,14 +63,17 @@ export default function ContactForm() {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-400 ml-1">Message</label>
-          <textarea 
+          <label htmlFor="message" className="text-sm text-gray-400 ml-1">
+            Message
+          </label>
+          <textarea
+            id="message"
             rows={4}
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-emerald-500/50 text-white transition-colors resize-none"
           />
         </div>
 
-        <button 
+        <button
           type="submit"
           className="w-full glass-button py-4 rounded-xl text-emerald-400 font-medium tracking-wide mt-4 hover:scale-[1.02] active:scale-[0.98]"
         >
@@ -66,4 +83,3 @@ export default function ContactForm() {
     </motion.div>
   );
 }
-

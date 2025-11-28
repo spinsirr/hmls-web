@@ -1,7 +1,7 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import Background from "@/components/Background";
 import { Mail, MapPin, Phone } from "lucide-react";
+import Background from "@/components/Background";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import ContactForm from "@/components/sections/ContactForm";
 import { FadeIn } from "@/components/ui/Animations";
 import RealMap from "@/components/ui/RealMap";
@@ -24,8 +24,8 @@ export default function Contact() {
               <span className="text-emerald-500">Reliable Auto Care.</span>
             </h1>
             <p className="text-xl text-gray-400 font-light mb-12 max-w-md">
-              Ready to schedule a service or have a question? We&apos;re here to help. 
-              We come to you anywhere in Orange County.
+              Ready to schedule a service or have a question? We&apos;re here to
+              help. We come to you anywhere in Orange County.
             </p>
 
             <div className="space-y-8 mb-12">
@@ -38,7 +38,7 @@ export default function Contact() {
                   <div className="text-lg font-medium">Orange County, CA</div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-emerald-500">
                   <Phone className="w-5 h-5" />
@@ -61,7 +61,7 @@ export default function Contact() {
             </div>
 
             <div className="w-full h-64 rounded-2xl overflow-hidden glass-panel border-emerald-500/20 relative group">
-               <RealMap className="w-full h-full" />
+              <RealMap className="w-full h-full" />
             </div>
           </FadeIn>
 

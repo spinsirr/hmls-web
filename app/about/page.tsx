@@ -1,9 +1,9 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Heart, UserCheck, Wrench } from "lucide-react";
+import Image from "next/image";
 import Background from "@/components/Background";
-import { Award, Heart, UserCheck, Wrench } from "lucide-react";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import { FadeIn } from "@/components/ui/Animations";
-import PlaceholderImage from "@/components/ui/PlaceholderImage";
 
 export default function About() {
   return (
@@ -24,34 +24,43 @@ export default function About() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16 items-start">
           <div className="space-y-8">
-             <FadeIn 
+            <FadeIn
               direction="left"
               className="glass-panel p-8 rounded-2xl border border-emerald-500/20"
             >
               <h3 className="text-2xl font-light mb-6">The HMLS Story</h3>
               <p className="text-gray-400 font-light leading-relaxed mb-6">
-                Hi, I&apos;m the founder of HMLS Mobile Mechanic. With over 20 years of hands-on experience, 
-                including time at Fortune 100 dealerships, I&apos;ve seen it all.
+                Hi, I&apos;m the founder of HMLS Mobile Mechanic. With over 20
+                years of hands-on experience, including time at Fortune 100
+                dealerships, I&apos;ve seen it all.
               </p>
               <p className="text-gray-400 font-light leading-relaxed mb-6">
-                I started this business to give Orange County a better, more personalized alternative to 
-                traditional auto repair shops. My aim is to deliver exceptional care for your vehicle 
-                without the high overhead costs or the impersonal service you&apos;d find at a dealership.
+                I started this business to give Orange County a better, more
+                personalized alternative to traditional auto repair shops. My
+                aim is to deliver exceptional care for your vehicle without the
+                high overhead costs or the impersonal service you&apos;d find at
+                a dealership.
               </p>
               <p className="text-gray-400 font-light leading-relaxed">
-                Whether it&apos;s routine maintenance or complex diagnostics, I&apos;ll make sure your car gets 
-                the attention it deserves right at your driveway.
+                Whether it&apos;s routine maintenance or complex diagnostics,
+                I&apos;ll make sure your car gets the attention it deserves
+                right at your driveway.
               </p>
             </FadeIn>
 
-             {/* Image - Replaced Grid with Single Image */}
-             <FadeIn direction="up" className="h-64 rounded-2xl overflow-hidden border border-white/10">
-                <img 
-                  src="https://images.unsplash.com/photo-1530046339160-7116568700ed?auto=format&fit=crop&q=80" 
-                  alt="Mechanic working on engine"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
-             </FadeIn>
+            {/* Image - Replaced Grid with Single Image */}
+            <FadeIn
+              direction="up"
+              className="relative h-64 rounded-2xl overflow-hidden border border-white/10"
+            >
+              <Image
+                src="https://images.unsplash.com/photo-1530046339160-7116568700ed?auto=format&fit=crop&q=80"
+                alt="Mechanic working on engine"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
+            </FadeIn>
           </div>
 
           <div className="space-y-8">
@@ -59,21 +68,21 @@ export default function About() {
               {
                 title: "Our Mission",
                 desc: "We deliver convenient, affordable, and high-quality auto repair services to keep your vehicle running smoothly.",
-                icon: <Wrench className="w-6 h-6 text-emerald-500" />
+                icon: <Wrench className="w-6 h-6 text-emerald-500" />,
               },
               {
                 title: "Our Vision",
                 desc: "To become the trusted go-to mobile mechanic for stress-free, reliable, and expert automotive care in Orange County.",
-                icon: <UserCheck className="w-6 h-6 text-emerald-500" />
+                icon: <UserCheck className="w-6 h-6 text-emerald-500" />,
               },
               {
                 title: "Core Values",
                 desc: "Honesty, dedication, and customer satisfaction are the driving forces behind every repair we perform.",
-                icon: <Heart className="w-6 h-6 text-emerald-500" />
-              }
+                icon: <Heart className="w-6 h-6 text-emerald-500" />,
+              },
             ].map((item, i) => (
               <FadeIn
-                key={i}
+                key={item.title}
                 direction="right"
                 delay={i * 0.2}
                 className="flex gap-4 items-start"
@@ -82,35 +91,51 @@ export default function About() {
                   {item.icon}
                 </div>
                 <div>
-                  <h4 className="text-xl font-medium text-white mb-2">{item.title}</h4>
-                  <p className="text-gray-400 font-light text-sm leading-relaxed">{item.desc}</p>
+                  <h4 className="text-xl font-medium text-white mb-2">
+                    {item.title}
+                  </h4>
+                  <p className="text-gray-400 font-light text-sm leading-relaxed">
+                    {item.desc}
+                  </p>
                 </div>
               </FadeIn>
             ))}
-            
-            <FadeIn direction="right" delay={0.6} className="relative h-80 rounded-2xl overflow-hidden glass-panel border-white/5 mt-8">
-               <img 
-                  src="https://images.unsplash.com/photo-1586765501019-78169dd5d171?auto=format&fit=crop&q=80" 
-                  alt="Mechanic tools"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
+
+            <FadeIn
+              direction="right"
+              delay={0.6}
+              className="relative h-80 rounded-2xl overflow-hidden glass-panel border-white/5 mt-8"
+            >
+              <Image
+                src="https://images.unsplash.com/photo-1586765501019-78169dd5d171?auto=format&fit=crop&q=80"
+                alt="Mechanic tools"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
             </FadeIn>
           </div>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-24">
-           {[
-             { label: "Friendly Support", desc: "Responsive communication" },
-             { label: "Expertise", desc: "Dealer-quality service" },
-             { label: "Flexibility", desc: "Tailored to your schedule" },
-             { label: "Affordable", desc: "No shop overhead costs" }
-           ].map((stat, i) => (
-             <FadeIn key={i} delay={i * 0.1} className="glass-panel p-6 rounded-xl text-center">
-               <div className="text-emerald-400 font-medium mb-2">{stat.label}</div>
-               <div className="text-xs text-gray-500">{stat.desc}</div>
-             </FadeIn>
-           ))}
+          {[
+            { label: "Friendly Support", desc: "Responsive communication" },
+            { label: "Expertise", desc: "Dealer-quality service" },
+            { label: "Flexibility", desc: "Tailored to your schedule" },
+            { label: "Affordable", desc: "No shop overhead costs" },
+          ].map((stat, i) => (
+            <FadeIn
+              key={stat.label}
+              delay={i * 0.1}
+              className="glass-panel p-6 rounded-xl text-center"
+            >
+              <div className="text-emerald-400 font-medium mb-2">
+                {stat.label}
+              </div>
+              <div className="text-xs text-gray-500">{stat.desc}</div>
+            </FadeIn>
+          ))}
         </div>
       </section>
 
