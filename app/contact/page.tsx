@@ -45,7 +45,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="text-sm text-gray-400">Phone</div>
-                  <div className="text-lg font-medium">(555) 123-4567</div>
+                  <a href="tel:+19492137073" className="text-lg font-medium hover:text-emerald-400 transition-colors">(949) 213-7073</a>
                 </div>
               </div>
 
@@ -55,7 +55,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="text-sm text-gray-400">Email</div>
-                  <div className="text-lg font-medium">contact@hmls.com</div>
+                  <a href="mailto:business@hmls.autos" className="text-lg font-medium hover:text-emerald-400 transition-colors">business@hmls.autos</a>
                 </div>
               </div>
             </div>
