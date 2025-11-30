@@ -11,7 +11,7 @@ export default function Contact() {
       <Navbar />
       <Background />
 
-      <section className="w-full max-w-3xl px-6 pt-32 pb-20">
+      <section className="w-full max-w-3xl px-6 pt-32 pb-20 flex-grow">
         <div className="flex flex-col items-center text-center">
           <FadeIn direction="up">
             <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs tracking-widest uppercase">
