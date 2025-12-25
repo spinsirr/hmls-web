@@ -8,7 +8,7 @@ const STRIPE_API_BASE = "https://api.stripe.com/v1";
 async function stripeRequest(
   endpoint: string,
   method: "GET" | "POST" = "POST",
-  body?: Record<string, unknown>
+  body?: Record<string, unknown>,
 ) {
   const response = await fetch(`${STRIPE_API_BASE}${endpoint}`, {
     method,
@@ -16,7 +16,9 @@ async function stripeRequest(
       Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: body ? new URLSearchParams(body as Record<string, string>).toString() : undefined,
+    body: body
+      ? new URLSearchParams(body as Record<string, string>).toString()
+      : undefined,
   });
 
   if (!response.ok) {
@@ -60,7 +62,7 @@ export const createQuoteTool = {
           service: z.string().describe("Service name"),
           description: z.string().describe("Description of the work"),
           amount: z.number().describe("Price in dollars"),
-        })
+        }),
       )
       .describe("List of services and their prices"),
     expiresInDays: z.number().default(7).describe("Days until quote expires"),
@@ -76,23 +78,33 @@ export const createQuoteTool = {
     const lineItems: Record<string, string> = {};
     params.items.forEach((item, index) => {
       lineItems[`line_items[${index}][price_data][currency]`] = "usd";
-      lineItems[`line_items[${index}][price_data][product_data][name]`] = item.service;
-      lineItems[`line_items[${index}][price_data][product_data][description]`] = item.description;
-      lineItems[`line_items[${index}][price_data][unit_amount]`] = String(Math.round(item.amount * 100));
+      lineItems[`line_items[${index}][price_data][product_data][name]`] =
+        item.service;
+      lineItems[`line_items[${index}][price_data][product_data][description]`] =
+        item.description;
+      lineItems[`line_items[${index}][price_data][unit_amount]`] = String(
+        Math.round(item.amount * 100),
+      );
       lineItems[`line_items[${index}][quantity]`] = "1";
     });
 
     // Create quote in Stripe
     const stripeQuote = await stripeRequest("/quotes", "POST", {
       customer: stripeCustomerId,
-      expires_at: String(Math.floor(Date.now() / 1000) + (params.expiresInDays || 7) * 24 * 60 * 60),
+      expires_at: String(
+        Math.floor(Date.now() / 1000) +
+          (params.expiresInDays || 7) * 24 * 60 * 60,
+      ),
       ...lineItems,
     });
 
     // Finalize the quote so it can be sent
     await stripeRequest(`/quotes/${stripeQuote.id}/finalize`, "POST");
 
-    const totalAmount = params.items.reduce((sum, item) => sum + Math.round(item.amount * 100), 0);
+    const totalAmount = params.items.reduce(
+      (sum, item) => sum + Math.round(item.amount * 100),
+      0,
+    );
 
     // Store in database
     const [quote] = await db
@@ -103,7 +115,9 @@ export const createQuoteTool = {
         items: params.items,
         totalAmount,
         status: "sent",
-        expiresAt: new Date(Date.now() + (params.expiresInDays || 7) * 24 * 60 * 60 * 1000),
+        expiresAt: new Date(
+          Date.now() + (params.expiresInDays || 7) * 24 * 60 * 60 * 1000,
+        ),
       })
       .returning();
 
@@ -113,7 +127,9 @@ export const createQuoteTool = {
       stripeQuoteId: stripeQuote.id,
       totalAmount: totalAmount / 100,
       hostedUrl: stripeQuote.hosted_quote_url,
-      message: `Quote created for $${(totalAmount / 100).toFixed(2)}. Customer can view and accept at: ${stripeQuote.hosted_quote_url}`,
+      message: `Quote created for $${
+        (totalAmount / 100).toFixed(2)
+      }. Customer can view and accept at: ${stripeQuote.hosted_quote_url}`,
     };
   },
 };
@@ -130,10 +146,12 @@ export const createInvoiceTool = {
           service: z.string().describe("Service name"),
           description: z.string().describe("Description of the work completed"),
           amount: z.number().describe("Price in dollars"),
-        })
+        }),
       )
       .describe("List of services and their prices"),
-    bookingId: z.number().optional().describe("Associated booking ID if applicable"),
+    bookingId: z.number().optional().describe(
+      "Associated booking ID if applicable",
+    ),
     dueInDays: z.number().default(7).describe("Days until invoice is due"),
   }),
   execute: async (params: {
@@ -165,7 +183,10 @@ export const createInvoiceTool = {
     await stripeRequest(`/invoices/${stripeInvoice.id}/finalize`, "POST");
     await stripeRequest(`/invoices/${stripeInvoice.id}/send`, "POST");
 
-    const totalAmount = params.items.reduce((sum, item) => sum + Math.round(item.amount * 100), 0);
+    const totalAmount = params.items.reduce(
+      (sum, item) => sum + Math.round(item.amount * 100),
+      0,
+    );
 
     // Store in database
     const [invoice] = await db
@@ -186,7 +207,9 @@ export const createInvoiceTool = {
       stripeInvoiceId: stripeInvoice.id,
       totalAmount: totalAmount / 100,
       hostedUrl: stripeInvoice.hosted_invoice_url,
-      message: `Invoice for $${(totalAmount / 100).toFixed(2)} has been sent to the customer. They can pay at: ${stripeInvoice.hosted_invoice_url}`,
+      message: `Invoice for $${
+        (totalAmount / 100).toFixed(2)
+      } has been sent to the customer. They can pay at: ${stripeInvoice.hosted_invoice_url}`,
     };
   },
 };
@@ -210,7 +233,10 @@ export const getQuoteStatusTool = {
 
     // Get latest status from Stripe if we have a Stripe ID
     if (quote.stripeQuoteId) {
-      const stripeQuote = await stripeRequest(`/quotes/${quote.stripeQuoteId}`, "GET");
+      const stripeQuote = await stripeRequest(
+        `/quotes/${quote.stripeQuoteId}`,
+        "GET",
+      );
 
       // Update local status if changed
       if (stripeQuote.status !== quote.status) {
@@ -240,4 +266,8 @@ export const getQuoteStatusTool = {
   },
 };
 
-export const stripeTools = [createQuoteTool, createInvoiceTool, getQuoteStatusTool];
+export const stripeTools = [
+  createQuoteTool,
+  createInvoiceTool,
+  getQuoteStatusTool,
+];

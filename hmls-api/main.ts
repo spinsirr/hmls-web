@@ -13,7 +13,7 @@ app.use(
     origin: ["http://localhost:3000", "https://hmls.autos"],
     allowMethods: ["GET", "POST", "OPTIONS"],
     allowHeaders: ["Content-Type", "Upgrade", "Connection"],
-  })
+  }),
 );
 
 // Health check

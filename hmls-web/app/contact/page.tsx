@@ -43,7 +43,12 @@ export default function Contact() {
                 </div>
                 <div className="text-left">
                   <div className="text-xs text-gray-400">Phone</div>
-                  <a href="tel:+19492137073" className="text-sm font-medium hover:text-emerald-400 transition-colors">(949) 213-7073</a>
+                  <a
+                    href="tel:+19492137073"
+                    className="text-sm font-medium hover:text-emerald-400 transition-colors"
+                  >
+                    (949) 213-7073
+                  </a>
                 </div>
               </div>
 
@@ -53,7 +58,12 @@ export default function Contact() {
                 </div>
                 <div className="text-left">
                   <div className="text-xs text-gray-400">Email</div>
-                  <a href="mailto:business@hmls.autos" className="text-sm font-medium hover:text-emerald-400 transition-colors">business@hmls.autos</a>
+                  <a
+                    href="mailto:business@hmls.autos"
+                    className="text-sm font-medium hover:text-emerald-400 transition-colors"
+                  >
+                    business@hmls.autos
+                  </a>
                 </div>
               </div>
             </div>

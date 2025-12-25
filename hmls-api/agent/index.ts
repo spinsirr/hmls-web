@@ -21,7 +21,9 @@ export async function createHmlsAgent() {
   return agent;
 }
 
-export async function runAgentTask(agent: Awaited<ReturnType<typeof createHmlsAgent>>, message: string) {
-  const taskEvents = agent.runTask(message, "claude-sonnet-4-20250514");
-  return taskEvents;
+export function runAgentTask(
+  agent: Awaited<ReturnType<typeof createHmlsAgent>>,
+  message: string,
+) {
+  return agent.runTask(message, "claude-sonnet-4-20250514");
 }

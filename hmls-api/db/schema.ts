@@ -1,12 +1,12 @@
 import {
+  boolean,
+  integer,
+  jsonb,
   pgTable,
   serial,
   text,
   timestamp,
   varchar,
-  integer,
-  jsonb,
-  boolean,
 } from "drizzle-orm/pg-core";
 
 export const services = pgTable("services", {

@@ -1,6 +1,5 @@
 import { Hono } from "hono";
-import { createBunWebSocket } from "hono/bun";
-import { eachValueFrom } from "npm:rxjs-for-await";
+import { eachValueFrom } from "rxjs-for-await";
 import { createHmlsAgent, runAgentTask } from "../agent/index.ts";
 import { db, schema } from "../db/client.ts";
 import { eq } from "drizzle-orm";
@@ -18,7 +17,7 @@ async function getAgent() {
 }
 
 // WebSocket upgrade handler
-task.get("/", async (c) => {
+task.get("/", (c) => {
   const upgrade = c.req.header("upgrade");
 
   if (upgrade?.toLowerCase() !== "websocket") {

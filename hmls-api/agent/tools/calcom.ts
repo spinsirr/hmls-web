@@ -16,19 +16,19 @@ export const getAvailabilityTool = {
     endDate: z
       .string()
       .describe(
-        "End date in YYYY-MM-DD format (defaults to 7 days from start)"
+        "End date in YYYY-MM-DD format (defaults to 7 days from start)",
       ),
   }),
   execute: async (params: { startDate?: string; endDate?: string }) => {
-    const start =
-      params.startDate || new Date().toISOString().split("T")[0];
-    const end =
-      params.endDate ||
-      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    const start = params.startDate || new Date().toISOString().split("T")[0];
+    const end = params.endDate ||
+      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split(
+        "T",
+      )[0];
 
     const response = await fetch(
       `${CALCOM_API_BASE}/availability?apiKey=${CALCOM_API_KEY}&eventTypeId=${CALCOM_EVENT_TYPE_ID}&startTime=${start}&endTime=${end}`,
-      { method: "GET" }
+      { method: "GET" },
     );
 
     if (!response.ok) {
@@ -57,7 +57,7 @@ export const createBookingTool = {
     duration: z
       .number()
       .describe(
-        "Appointment duration in minutes. Determine this based on the services the customer needs."
+        "Appointment duration in minutes. Determine this based on the services the customer needs.",
       ),
     serviceType: z.string().describe("Type of service requested"),
     location: z.string().describe("Service location/address"),
@@ -93,7 +93,7 @@ export const createBookingTool = {
             notes: params.notes || "",
           },
         }),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -107,7 +107,9 @@ export const createBookingTool = {
       bookingId: booking.id,
       confirmationNumber: booking.uid,
       scheduledTime: params.startTime,
-      message: `Booking confirmed for ${params.name} on ${new Date(params.startTime).toLocaleString()}`,
+      message: `Booking confirmed for ${params.name} on ${
+        new Date(params.startTime).toLocaleString()
+      }`,
     };
   },
 };

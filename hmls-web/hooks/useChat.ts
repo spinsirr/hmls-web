@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export interface Message {
   id: string;
@@ -118,36 +118,39 @@ export function useChat() {
     wsRef.current = null;
   }, []);
 
-  const sendMessage = useCallback((message: string) => {
-    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-      console.error("WebSocket not connected");
-      return;
-    }
+  const sendMessage = useCallback(
+    (message: string) => {
+      if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
+        console.error("WebSocket not connected");
+        return;
+      }
 
-    // Add user message to state
-    setState((s) => ({
-      ...s,
-      isLoading: true,
-      messages: [
-        ...s.messages,
-        {
-          id: crypto.randomUUID(),
-          role: "user",
-          content: message,
-          timestamp: new Date(),
-        },
-      ],
-    }));
+      // Add user message to state
+      setState((s) => ({
+        ...s,
+        isLoading: true,
+        messages: [
+          ...s.messages,
+          {
+            id: crypto.randomUUID(),
+            role: "user",
+            content: message,
+            timestamp: new Date(),
+          },
+        ],
+      }));
 
-    // Send to server
-    wsRef.current.send(
-      JSON.stringify({
-        type: "message",
-        message,
-        conversationId: state.conversationId,
-      })
-    );
-  }, [state.conversationId]);
+      // Send to server
+      wsRef.current.send(
+        JSON.stringify({
+          type: "message",
+          message,
+          conversationId: state.conversationId,
+        }),
+      );
+    },
+    [state.conversationId],
+  );
 
   const clearMessages = useCallback(() => {
     setState((s) => ({ ...s, messages: [], conversationId: null }));

@@ -11,7 +11,10 @@ export const getCustomerTool = {
   }),
   execute: async (params: { phone?: string; email?: string }) => {
     if (!params.phone && !params.email) {
-      return { found: false, message: "Please provide a phone number or email" };
+      return {
+        found: false,
+        message: "Please provide a phone number or email",
+      };
     }
 
     const conditions = [];
@@ -25,7 +28,10 @@ export const getCustomerTool = {
       .limit(1);
 
     if (customer.length === 0) {
-      return { found: false, message: "No customer found with that information" };
+      return {
+        found: false,
+        message: "No customer found with that information",
+      };
     }
 
     return {
@@ -37,7 +43,8 @@ export const getCustomerTool = {
 
 export const createCustomerTool = {
   name: "create_customer",
-  description: "Create a new customer record with their contact and vehicle information.",
+  description:
+    "Create a new customer record with their contact and vehicle information.",
   parameters: z.object({
     name: z.string().describe("Customer's full name"),
     phone: z.string().describe("Customer's phone number"),
@@ -59,10 +66,10 @@ export const createCustomerTool = {
     const vehicleInfo =
       params.vehicleMake || params.vehicleModel || params.vehicleYear
         ? {
-            make: params.vehicleMake,
-            model: params.vehicleModel,
-            year: params.vehicleYear,
-          }
+          make: params.vehicleMake,
+          model: params.vehicleModel,
+          year: params.vehicleYear,
+        }
         : null;
 
     const [customer] = await db
@@ -86,7 +93,8 @@ export const createCustomerTool = {
 
 export const getServicesTool = {
   name: "get_services",
-  description: "Get the list of available services with descriptions and pricing from the database.",
+  description:
+    "Get the list of available services with descriptions and pricing from the database.",
   parameters: z.object({}),
   execute: async () => {
     const servicesList = await db
@@ -121,18 +129,29 @@ export const createEstimateTool = {
           name: z.string().describe("Service name"),
           description: z.string().describe("Brief description of work needed"),
           estimatedPrice: z.number().describe("Estimated price in dollars"),
-        })
+        }),
       )
       .describe("List of services needed"),
-    notes: z.string().optional().describe("Any additional notes about the estimate"),
+    notes: z.string().optional().describe(
+      "Any additional notes about the estimate",
+    ),
   }),
-  execute: async (params: {
+  execute: (params: {
     services: { name: string; description: string; estimatedPrice: number }[];
     notes?: string;
   }) => {
-    const totalMin = params.services.reduce((sum, s) => sum + s.estimatedPrice * 0.9, 0);
-    const totalMax = params.services.reduce((sum, s) => sum + s.estimatedPrice * 1.1, 0);
-    const totalEstimate = params.services.reduce((sum, s) => sum + s.estimatedPrice, 0);
+    const totalMin = params.services.reduce(
+      (sum, s) => sum + s.estimatedPrice * 0.9,
+      0,
+    );
+    const totalMax = params.services.reduce(
+      (sum, s) => sum + s.estimatedPrice * 1.1,
+      0,
+    );
+    const totalEstimate = params.services.reduce(
+      (sum, s) => sum + s.estimatedPrice,
+      0,
+    );
 
     return {
       services: params.services,
@@ -148,4 +167,9 @@ export const createEstimateTool = {
   },
 };
 
-export const customerTools = [getCustomerTool, createCustomerTool, getServicesTool, createEstimateTool];
+export const customerTools = [
+  getCustomerTool,
+  createCustomerTool,
+  getServicesTool,
+  createEstimateTool,
+];

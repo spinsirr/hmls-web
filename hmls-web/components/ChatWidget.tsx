@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect, FormEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Loader2, Wrench } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Loader2, MessageCircle, Send, Wrench, X } from "lucide-react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { useChat } from "@/hooks/useChat";
 
 export function ChatWidget() {
@@ -11,12 +11,19 @@ export function ChatWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { messages, isConnected, isLoading, currentTool, sendMessage, clearMessages } = useChat();
+  const {
+    messages,
+    isConnected,
+    isLoading,
+    currentTool,
+    sendMessage,
+    clearMessages,
+  } = useChat();
 
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  });
 
   // Focus input when opened
   useEffect(() => {
@@ -100,6 +107,7 @@ export function ChatWidget() {
                 </div>
               </div>
               <button
+                type="button"
                 onClick={clearMessages}
                 className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
               >
@@ -146,17 +154,19 @@ export function ChatWidget() {
               )}
 
               {/* Loading indicator */}
-              {isLoading && !currentTool && messages[messages.length - 1]?.role === "user" && (
-                <div className="flex justify-start">
-                  <div className="bg-zinc-800 px-4 py-2 rounded-2xl rounded-bl-md">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce" />
-                      <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce [animation-delay:0.1s]" />
-                      <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce [animation-delay:0.2s]" />
+              {isLoading &&
+                !currentTool &&
+                messages[messages.length - 1]?.role === "user" && (
+                  <div className="flex justify-start">
+                    <div className="bg-zinc-800 px-4 py-2 rounded-2xl rounded-bl-md">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce" />
+                        <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce [animation-delay:0.1s]" />
+                        <span className="w-2 h-2 bg-zinc-500 rounded-full animate-bounce [animation-delay:0.2s]" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
               <div ref={messagesEndRef} />
             </div>
