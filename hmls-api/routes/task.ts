@@ -65,7 +65,7 @@ task.get("/", (c) => {
           JSON.stringify({
             type: "conversation",
             conversationId,
-          })
+          }),
         );
 
         // Get agent and run task
@@ -81,21 +81,21 @@ task.get("/", (c) => {
               JSON.stringify({
                 type: "delta",
                 text: event.content,
-              })
+              }),
             );
           } else if (event.type === "tool_use") {
             socket.send(
               JSON.stringify({
                 type: "tool_start",
                 name: event.name,
-              })
+              }),
             );
           } else if (event.type === "tool_result") {
             socket.send(
               JSON.stringify({
                 type: "tool_end",
                 name: event.name,
-              })
+              }),
             );
           }
         }
@@ -115,7 +115,7 @@ task.get("/", (c) => {
         socket.send(
           JSON.stringify({
             type: "done",
-          })
+          }),
         );
       }
     } catch (error) {
@@ -124,7 +124,7 @@ task.get("/", (c) => {
         JSON.stringify({
           type: "error",
           message: "An error occurred while processing your request",
-        })
+        }),
       );
     }
   };

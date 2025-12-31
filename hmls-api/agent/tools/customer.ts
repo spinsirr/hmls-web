@@ -3,8 +3,7 @@ import { db } from "../../db/client.ts";
 
 export const getCustomerTool = {
   name: "get_customer",
-  description:
-    "Look up an existing customer by phone number or email address.",
+  description: "Look up an existing customer by phone number or email address.",
   parameters: z.object({
     phone: z.string().optional().describe("Customer's phone number"),
     email: z.string().email().optional().describe("Customer's email address"),
@@ -76,10 +75,10 @@ export const createCustomerTool = {
     const vehicleInfo =
       params.vehicleMake || params.vehicleModel || params.vehicleYear
         ? {
-            make: params.vehicleMake,
-            model: params.vehicleModel,
-            year: params.vehicleYear,
-          }
+          make: params.vehicleMake,
+          model: params.vehicleModel,
+          year: params.vehicleYear,
+        }
         : null;
 
     const customer = await db
@@ -141,7 +140,7 @@ export const createEstimateTool = {
           name: z.string().describe("Service name"),
           description: z.string().describe("Brief description of work needed"),
           estimatedPrice: z.number().describe("Estimated price in dollars"),
-        })
+        }),
       )
       .describe("List of services needed"),
     notes: z
@@ -158,21 +157,22 @@ export const createEstimateTool = {
     if (services.length === 0) {
       return {
         error: true,
-        message: "No services provided for estimate. Please specify the services needed.",
+        message:
+          "No services provided for estimate. Please specify the services needed.",
       };
     }
 
     const totalMin = services.reduce(
       (sum, s) => sum + s.estimatedPrice * 0.9,
-      0
+      0,
     );
     const totalMax = services.reduce(
       (sum, s) => sum + s.estimatedPrice * 1.1,
-      0
+      0,
     );
     const totalEstimate = services.reduce(
       (sum, s) => sum + s.estimatedPrice,
-      0
+      0,
     );
 
     return {

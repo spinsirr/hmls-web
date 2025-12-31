@@ -30,7 +30,7 @@ db-seed:
 # Code quality
 fmt:
     cd hmls-api && deno fmt
-    cd hmls-web && bun run fmt
+    cd hmls-web && bun run format
 
 lint:
     cd hmls-api && deno lint
