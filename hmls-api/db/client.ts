@@ -1,24 +1,28 @@
-import { drizzle } from "drizzle-orm/postgres-js";
+import { Kysely } from "kysely";
+import { PostgresJSDialect } from "kysely-postgres-js";
 import postgres from "postgres";
-import * as schema from "./schema.ts";
+import type { Database } from "./schema.ts";
 
-let _db: ReturnType<typeof drizzle> | null = null;
-let _client: ReturnType<typeof postgres> | null = null;
+let _db: Kysely<Database> | null = null;
 
-function getDb() {
+function getDb(): Kysely<Database> {
   if (!_db) {
     const connectionString = Deno.env.get("DATABASE_URL");
     if (!connectionString) {
       throw new Error("DATABASE_URL environment variable is required");
     }
-    _client = postgres(connectionString);
-    _db = drizzle(_client, { schema });
+
+    const pg = postgres(connectionString);
+
+    _db = new Kysely<Database>({
+      dialect: new PostgresJSDialect({ postgres: pg }),
+    });
   }
   return _db;
 }
 
-// Proxy that lazily initializes the database connection
-export const db = new Proxy({} as ReturnType<typeof drizzle>, {
+// Proxy for lazy initialization
+export const db = new Proxy({} as Kysely<Database>, {
   get(_target, prop) {
     const realDb = getDb();
     const value = realDb[prop as keyof typeof realDb];
@@ -29,4 +33,4 @@ export const db = new Proxy({} as ReturnType<typeof drizzle>, {
   },
 });
 
-export { schema };
+export * from "./schema.ts";

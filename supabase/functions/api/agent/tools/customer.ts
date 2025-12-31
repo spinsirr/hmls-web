@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { db } from "../../db/client.ts";
+import { db, schema } from "../../db/client.ts";
+import { eq, or } from "drizzle-orm";
 
 export const getCustomerTool = {
   name: "get_customer",
-  description:
-    "Look up an existing customer by phone number or email address.",
+  description: "Look up an existing customer by phone number or email address.",
   parameters: z.object({
     phone: z.string().optional().describe("Customer's phone number"),
     email: z.string().email().optional().describe("Customer's email address"),
@@ -17,24 +17,17 @@ export const getCustomerTool = {
       };
     }
 
-    let query = db.selectFrom("customers").selectAll();
+    const conditions = [];
+    if (params.phone) conditions.push(eq(schema.customers.phone, params.phone));
+    if (params.email) conditions.push(eq(schema.customers.email, params.email));
 
-    if (params.phone && params.email) {
-      query = query.where((eb) =>
-        eb.or([
-          eb("phone", "=", params.phone!),
-          eb("email", "=", params.email!),
-        ])
-      );
-    } else if (params.phone) {
-      query = query.where("phone", "=", params.phone);
-    } else if (params.email) {
-      query = query.where("email", "=", params.email);
-    }
+    const customer = await db
+      .select()
+      .from(schema.customers)
+      .where(or(...conditions))
+      .limit(1);
 
-    const customer = await query.executeTakeFirst();
-
-    if (!customer) {
+    if (customer.length === 0) {
       return {
         found: false,
         message: "No customer found with that information",
@@ -43,7 +36,7 @@ export const getCustomerTool = {
 
     return {
       found: true,
-      customer,
+      customer: customer[0],
     };
   },
 };
@@ -58,10 +51,7 @@ export const createCustomerTool = {
     email: z.string().email().optional().describe("Customer's email address"),
     address: z.string().optional().describe("Customer's address for service"),
     vehicleMake: z.string().optional().describe("Vehicle make (e.g., Toyota)"),
-    vehicleModel: z
-      .string()
-      .optional()
-      .describe("Vehicle model (e.g., Camry)"),
+    vehicleModel: z.string().optional().describe("Vehicle model (e.g., Camry)"),
     vehicleYear: z.string().optional().describe("Vehicle year (e.g., 2020)"),
   }),
   execute: async (params: {
@@ -76,23 +66,22 @@ export const createCustomerTool = {
     const vehicleInfo =
       params.vehicleMake || params.vehicleModel || params.vehicleYear
         ? {
-            make: params.vehicleMake,
-            model: params.vehicleModel,
-            year: params.vehicleYear,
-          }
+          make: params.vehicleMake,
+          model: params.vehicleModel,
+          year: params.vehicleYear,
+        }
         : null;
 
-    const customer = await db
-      .insertInto("customers")
+    const [customer] = await db
+      .insert(schema.customers)
       .values({
         name: params.name,
         phone: params.phone,
-        email: params.email ?? null,
-        address: params.address ?? null,
-        vehicle_info: vehicleInfo,
+        email: params.email,
+        address: params.address,
+        vehicleInfo,
       })
-      .returning(["id", "name"])
-      .executeTakeFirstOrThrow();
+      .returning();
 
     return {
       success: true,
@@ -109,20 +98,19 @@ export const getServicesTool = {
   parameters: z.object({}),
   execute: async () => {
     const servicesList = await db
-      .selectFrom("services")
-      .selectAll()
-      .where("is_active", "=", true)
-      .orderBy("name", "asc")
-      .execute();
+      .select()
+      .from(schema.services)
+      .where(eq(schema.services.isActive, true))
+      .orderBy(schema.services.name);
 
     return {
       services: servicesList.map((s) => ({
         id: s.id,
         name: s.name,
         description: s.description,
-        minPrice: s.min_price / 100,
-        maxPrice: s.max_price / 100,
-        priceRange: `$${s.min_price / 100}-${s.max_price / 100}`,
+        minPrice: s.minPrice / 100, // convert cents to dollars
+        maxPrice: s.maxPrice / 100,
+        priceRange: `$${s.minPrice / 100}-${s.maxPrice / 100}`,
         duration: s.duration,
         category: s.category,
       })),
@@ -141,42 +129,32 @@ export const createEstimateTool = {
           name: z.string().describe("Service name"),
           description: z.string().describe("Brief description of work needed"),
           estimatedPrice: z.number().describe("Estimated price in dollars"),
-        })
+        }),
       )
       .describe("List of services needed"),
-    notes: z
-      .string()
-      .optional()
-      .describe("Any additional notes about the estimate"),
+    notes: z.string().optional().describe(
+      "Any additional notes about the estimate",
+    ),
   }),
   execute: (params: {
-    services?: { name: string; description: string; estimatedPrice: number }[];
+    services: { name: string; description: string; estimatedPrice: number }[];
     notes?: string;
   }) => {
-    const services = params.services ?? [];
-
-    if (services.length === 0) {
-      return {
-        error: true,
-        message: "No services provided for estimate. Please specify the services needed.",
-      };
-    }
-
-    const totalMin = services.reduce(
+    const totalMin = params.services.reduce(
       (sum, s) => sum + s.estimatedPrice * 0.9,
-      0
+      0,
     );
-    const totalMax = services.reduce(
+    const totalMax = params.services.reduce(
       (sum, s) => sum + s.estimatedPrice * 1.1,
-      0
+      0,
     );
-    const totalEstimate = services.reduce(
+    const totalEstimate = params.services.reduce(
       (sum, s) => sum + s.estimatedPrice,
-      0
+      0,
     );
 
     return {
-      services,
+      services: params.services,
       estimatedTotal: totalEstimate,
       priceRange: {
         low: Math.round(totalMin),

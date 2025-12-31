@@ -1,9 +1,8 @@
 {
   "tasks": {
-    "dev": "deno run --env --watch --allow-net --allow-env --allow-read main.ts",
-    "start": "deno run --env --allow-net --allow-env --allow-read main.ts",
-    "db:generate": "deno run --env -A npm:drizzle-kit generate",
-    "db:push": "deno run --env -A npm:drizzle-kit push",
+    "dev": "deno run --env --watch --allow-net --allow-env --allow-read --allow-write --allow-sys main.ts",
+    "start": "deno run --env --allow-net --allow-env --allow-read --allow-write --allow-sys main.ts",
+    "db:migrate": "deno run --env --allow-net --allow-env --allow-read db/migrate.ts",
     "db:seed": "deno run --env --allow-net --allow-env --allow-read db/seed.ts"
   },
   "imports": {
@@ -12,10 +11,8 @@
     "hono": "npm:hono@^4",
     "hono/cors": "npm:hono@^4/cors",
     "hono/logger": "npm:hono@^4/logger",
-    "drizzle-orm": "npm:drizzle-orm",
-    "drizzle-orm/pg-core": "npm:drizzle-orm/pg-core",
-    "drizzle-orm/postgres-js": "npm:drizzle-orm/postgres-js",
-    "drizzle-kit": "npm:drizzle-kit",
+    "kysely": "npm:kysely",
+    "kysely-postgres-js": "npm:kysely-postgres-js",
     "postgres": "npm:postgres",
     "zod": "npm:zod",
     "rxjs-for-await": "npm:rxjs-for-await"

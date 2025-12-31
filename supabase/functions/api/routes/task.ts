@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import { eachValueFrom } from "rxjs-for-await";
 import { createHmlsAgent, runAgentTask } from "../agent/index.ts";
-import { db } from "../db/client.ts";
+import { db, schema } from "../db/client.ts";
+import { eq } from "drizzle-orm";
 
 const task = new Hono();
 
@@ -40,33 +41,27 @@ task.get("/", (c) => {
 
         // Create or get conversation
         if (!conversationId && !convId) {
-          const conv = await db
-            .insertInto("conversations")
+          const [conv] = await db
+            .insert(schema.conversations)
             .values({ channel: "web" })
-            .returning(["id", "channel", "started_at"])
-            .executeTakeFirstOrThrow();
+            .returning();
           conversationId = conv.id;
         } else if (convId) {
           conversationId = convId;
         }
 
         // Store user message
-        await db
-          .insertInto("messages")
-          .values({
-            conversation_id: conversationId!,
-            role: "user",
-            content: message,
-          })
-          .execute();
+        await db.insert(schema.messages).values({
+          conversationId: conversationId!,
+          role: "user",
+          content: message,
+        });
 
         // Send conversation ID back
-        socket.send(
-          JSON.stringify({
-            type: "conversation",
-            conversationId,
-          })
-        );
+        socket.send(JSON.stringify({
+          type: "conversation",
+          conversationId,
+        }));
 
         // Get agent and run task
         const agent = await getAgent();
@@ -75,57 +70,44 @@ task.get("/", (c) => {
         let fullResponse = "";
 
         for await (const event of eachValueFrom(taskEvents)) {
-          if (event.type === "text") {
-            fullResponse += event.content;
-            socket.send(
-              JSON.stringify({
-                type: "delta",
-                text: event.content,
-              })
-            );
+          if (event.type === "text_delta") {
+            fullResponse += event.text;
+            socket.send(JSON.stringify({
+              type: "delta",
+              text: event.text,
+            }));
           } else if (event.type === "tool_use") {
-            socket.send(
-              JSON.stringify({
-                type: "tool_start",
-                name: event.name,
-              })
-            );
+            socket.send(JSON.stringify({
+              type: "tool_start",
+              name: event.name,
+            }));
           } else if (event.type === "tool_result") {
-            socket.send(
-              JSON.stringify({
-                type: "tool_end",
-                name: event.name,
-              })
-            );
+            socket.send(JSON.stringify({
+              type: "tool_end",
+              name: event.name,
+            }));
           }
         }
 
         // Store assistant response
         if (fullResponse) {
-          await db
-            .insertInto("messages")
-            .values({
-              conversation_id: conversationId!,
-              role: "assistant",
-              content: fullResponse,
-            })
-            .execute();
+          await db.insert(schema.messages).values({
+            conversationId: conversationId!,
+            role: "assistant",
+            content: fullResponse,
+          });
         }
 
-        socket.send(
-          JSON.stringify({
-            type: "done",
-          })
-        );
+        socket.send(JSON.stringify({
+          type: "done",
+        }));
       }
     } catch (error) {
       console.error("WebSocket error:", error);
-      socket.send(
-        JSON.stringify({
-          type: "error",
-          message: "An error occurred while processing your request",
-        })
-      );
+      socket.send(JSON.stringify({
+        type: "error",
+        message: "An error occurred while processing your request",
+      }));
     }
   };
 
@@ -145,11 +127,10 @@ task.get("/history/:conversationId", async (c) => {
   const conversationId = Number(c.req.param("conversationId"));
 
   const messages = await db
-    .selectFrom("messages")
-    .selectAll()
-    .where("conversation_id", "=", conversationId)
-    .orderBy("created_at", "asc")
-    .execute();
+    .select()
+    .from(schema.messages)
+    .where(eq(schema.messages.conversationId, conversationId))
+    .orderBy(schema.messages.createdAt);
 
   return c.json({ messages });
 });

@@ -1,88 +1,112 @@
-import {
-  boolean,
-  integer,
-  jsonb,
-  pgTable,
-  serial,
-  text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+import type { Generated, Insertable, Selectable, Updateable } from "kysely";
 
-export const services = pgTable("services", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
-  description: text("description").notNull(),
-  minPrice: integer("min_price").notNull(), // in cents
-  maxPrice: integer("max_price").notNull(), // in cents
-  duration: varchar("duration", { length: 50 }), // e.g., "30-45 minutes"
-  category: varchar("category", { length: 50 }), // e.g., "maintenance", "repair", "diagnostic"
-  isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+// Table interfaces
+export interface ServicesTable {
+  id: Generated<number>;
+  name: string;
+  description: string;
+  min_price: number;
+  max_price: number;
+  duration: string | null;
+  category: string | null;
+  is_active: Generated<boolean>;
+  created_at: Generated<Date>;
+  updated_at: Generated<Date>;
+}
 
-export const customers = pgTable("customers", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 255 }),
-  phone: varchar("phone", { length: 20 }),
-  email: varchar("email", { length: 255 }),
-  address: text("address"),
-  vehicleInfo: jsonb("vehicle_info"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+export interface CustomersTable {
+  id: Generated<number>;
+  name: string | null;
+  phone: string | null;
+  email: string | null;
+  address: string | null;
+  vehicle_info: unknown | null;
+  created_at: Generated<Date>;
+}
 
-export const conversations = pgTable("conversations", {
-  id: serial("id").primaryKey(),
-  customerId: integer("customer_id").references(() => customers.id),
-  channel: varchar("channel", { length: 20 }).notNull().default("web"),
-  startedAt: timestamp("started_at").defaultNow().notNull(),
-  endedAt: timestamp("ended_at"),
-});
+export interface ConversationsTable {
+  id: Generated<number>;
+  customer_id: number | null;
+  channel: Generated<string>;
+  started_at: Generated<Date>;
+  ended_at: Date | null;
+}
 
-export const messages = pgTable("messages", {
-  id: serial("id").primaryKey(),
-  conversationId: integer("conversation_id")
-    .references(() => conversations.id)
-    .notNull(),
-  role: varchar("role", { length: 20 }).notNull(),
-  content: text("content").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+export interface MessagesTable {
+  id: Generated<number>;
+  conversation_id: number;
+  role: string;
+  content: string;
+  created_at: Generated<Date>;
+}
 
-export const bookings = pgTable("bookings", {
-  id: serial("id").primaryKey(),
-  customerId: integer("customer_id").references(() => customers.id),
-  serviceType: varchar("service_type", { length: 100 }).notNull(),
-  scheduledAt: timestamp("scheduled_at").notNull(),
-  location: text("location"),
-  status: varchar("status", { length: 50 }).notNull().default("pending"),
-  notes: text("notes"),
-  calcomBookingId: varchar("calcom_booking_id", { length: 100 }),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+export interface BookingsTable {
+  id: Generated<number>;
+  customer_id: number | null;
+  service_type: string;
+  scheduled_at: Date;
+  location: string | null;
+  status: Generated<string>;
+  notes: string | null;
+  calcom_booking_id: string | null;
+  created_at: Generated<Date>;
+}
 
-export const quotes = pgTable("quotes", {
-  id: serial("id").primaryKey(),
-  customerId: integer("customer_id").references(() => customers.id),
-  bookingId: integer("booking_id").references(() => bookings.id),
-  stripeQuoteId: varchar("stripe_quote_id", { length: 100 }),
-  items: jsonb("items").notNull(), // [{ service, description, amount }]
-  totalAmount: integer("total_amount").notNull(), // in cents
-  status: varchar("status", { length: 50 }).notNull().default("draft"), // draft, sent, accepted, declined
-  expiresAt: timestamp("expires_at"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+export interface QuotesTable {
+  id: Generated<number>;
+  customer_id: number | null;
+  booking_id: number | null;
+  stripe_quote_id: string | null;
+  items: unknown;
+  total_amount: number;
+  status: Generated<string>;
+  expires_at: Date | null;
+  created_at: Generated<Date>;
+}
 
-export const invoices = pgTable("invoices", {
-  id: serial("id").primaryKey(),
-  customerId: integer("customer_id").references(() => customers.id),
-  bookingId: integer("booking_id").references(() => bookings.id),
-  quoteId: integer("quote_id").references(() => quotes.id),
-  stripeInvoiceId: varchar("stripe_invoice_id", { length: 100 }),
-  items: jsonb("items").notNull(), // [{ service, description, amount }]
-  totalAmount: integer("total_amount").notNull(), // in cents
-  status: varchar("status", { length: 50 }).notNull().default("draft"), // draft, sent, paid, void
-  paidAt: timestamp("paid_at"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+export interface InvoicesTable {
+  id: Generated<number>;
+  customer_id: number | null;
+  booking_id: number | null;
+  quote_id: number | null;
+  stripe_invoice_id: string | null;
+  items: unknown;
+  total_amount: number;
+  status: Generated<string>;
+  paid_at: Date | null;
+  created_at: Generated<Date>;
+}
+
+// Database interface
+export interface Database {
+  services: ServicesTable;
+  customers: CustomersTable;
+  conversations: ConversationsTable;
+  messages: MessagesTable;
+  bookings: BookingsTable;
+  quotes: QuotesTable;
+  invoices: InvoicesTable;
+}
+
+// Type helpers
+export type Service = Selectable<ServicesTable>;
+export type NewService = Insertable<ServicesTable>;
+export type ServiceUpdate = Updateable<ServicesTable>;
+
+export type Customer = Selectable<CustomersTable>;
+export type NewCustomer = Insertable<CustomersTable>;
+
+export type Conversation = Selectable<ConversationsTable>;
+export type NewConversation = Insertable<ConversationsTable>;
+
+export type Message = Selectable<MessagesTable>;
+export type NewMessage = Insertable<MessagesTable>;
+
+export type Booking = Selectable<BookingsTable>;
+export type NewBooking = Insertable<BookingsTable>;
+
+export type Quote = Selectable<QuotesTable>;
+export type NewQuote = Insertable<QuotesTable>;
+
+export type Invoice = Selectable<InvoicesTable>;
+export type NewInvoice = Insertable<InvoicesTable>;

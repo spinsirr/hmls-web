@@ -14,8 +14,9 @@
     "npm:@modelcontextprotocol/sdk@^1.23.0": "1.24.3_zod@4.1.13_ajv@8.17.1_express@5.2.1",
     "npm:chalk@^5.6.2": "5.6.2",
     "npm:diff@8.0.2": "8.0.2",
-    "npm:drizzle-orm@*": "0.45.1_postgres@3.4.7",
     "npm:hono@4": "4.10.8",
+    "npm:kysely-postgres-js@*": "3.0.0_kysely@0.28.8_postgres@3.4.7",
+    "npm:kysely@*": "0.28.8",
     "npm:openai@6.9.1": "6.9.1_zod@4.1.13",
     "npm:postgres@*": "3.4.7",
     "npm:rxjs-for-await@*": "1.0.0_rxjs@7.8.2",
@@ -1219,15 +1220,6 @@
     "diff@8.0.2": {
       "integrity": "sha512-sSuxWU5j5SR9QQji/o2qMvqRNYRDOcBTgsJ/DeCf4iSN4gW+gNMXM7wFIP+fdXZxoNiAnHUTGjCr+TSWXdRDKg=="
     },
-    "drizzle-orm@0.45.1_postgres@3.4.7": {
-      "integrity": "sha512-Te0FOdKIistGNPMq2jscdqngBRfBpC8uMFVwqjf6gtTVJHIQ/dosgV/CLBU2N4ZJBsXL5savCba9b0YJskKdcA==",
-      "dependencies": [
-        "postgres"
-      ],
-      "optionalPeers": [
-        "postgres"
-      ]
-    },
     "dunder-proto@1.0.1": {
       "integrity": "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==",
       "dependencies": [
@@ -1418,6 +1410,19 @@
     },
     "json-schema-traverse@1.0.0": {
       "integrity": "sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug=="
+    },
+    "kysely-postgres-js@3.0.0_kysely@0.28.8_postgres@3.4.7": {
+      "integrity": "sha512-o2t/xNSYJQDW6rVGGFPXKmZ0BEz2dGn66c2B+cO/k9ZNcU2qPWPycQPQ+B+P2MBXbKYq0xV9BZmFIvkUrmFWAQ==",
+      "dependencies": [
+        "kysely",
+        "postgres"
+      ],
+      "optionalPeers": [
+        "postgres"
+      ]
+    },
+    "kysely@0.28.8": {
+      "integrity": "sha512-QUOgl5ZrS9IRuhq5FvOKFSsD/3+IA6MLE81/bOOTRA/YQpKDza2sFdN5g6JCB9BOpqMJDGefLCQ9F12hRS13TA=="
     },
     "math-intrinsics@1.1.0": {
       "integrity": "sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g=="
@@ -1667,8 +1672,9 @@
   "workspace": {
     "dependencies": [
       "jsr:@corespeed/zypher@*",
-      "npm:drizzle-orm@*",
       "npm:hono@4",
+      "npm:kysely-postgres-js@*",
+      "npm:kysely@*",
       "npm:postgres@*",
       "npm:rxjs-for-await@*",
       "npm:zod@*"

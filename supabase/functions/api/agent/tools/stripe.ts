@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { db } from "../../db/client.ts";
+import { db, schema } from "../../db/client.ts";
+import { eq } from "drizzle-orm";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
@@ -30,11 +31,11 @@ async function stripeRequest(
 
 // Ensure customer exists in Stripe
 async function getOrCreateStripeCustomer(customerId: number) {
-  const customer = await db
-    .selectFrom("customers")
-    .selectAll()
-    .where("id", "=", customerId)
-    .executeTakeFirst();
+  const [customer] = await db
+    .select()
+    .from(schema.customers)
+    .where(eq(schema.customers.id, customerId))
+    .limit(1);
 
   if (!customer) throw new Error("Customer not found");
 
@@ -106,20 +107,19 @@ export const createQuoteTool = {
     );
 
     // Store in database
-    const quote = await db
-      .insertInto("quotes")
+    const [quote] = await db
+      .insert(schema.quotes)
       .values({
-        customer_id: params.customerId,
-        stripe_quote_id: stripeQuote.id,
-        items: JSON.stringify(params.items),
-        total_amount: totalAmount,
+        customerId: params.customerId,
+        stripeQuoteId: stripeQuote.id,
+        items: params.items,
+        totalAmount,
         status: "sent",
-        expires_at: new Date(
+        expiresAt: new Date(
           Date.now() + (params.expiresInDays || 7) * 24 * 60 * 60 * 1000,
         ),
       })
-      .returning(["id", "status", "total_amount"])
-      .executeTakeFirstOrThrow();
+      .returning();
 
     return {
       success: true,
@@ -189,18 +189,17 @@ export const createInvoiceTool = {
     );
 
     // Store in database
-    const invoice = await db
-      .insertInto("invoices")
+    const [invoice] = await db
+      .insert(schema.invoices)
       .values({
-        customer_id: params.customerId,
-        booking_id: params.bookingId ?? null,
-        stripe_invoice_id: stripeInvoice.id,
-        items: JSON.stringify(params.items),
-        total_amount: totalAmount,
+        customerId: params.customerId,
+        bookingId: params.bookingId,
+        stripeInvoiceId: stripeInvoice.id,
+        items: params.items,
+        totalAmount,
         status: "sent",
       })
-      .returning(["id", "status", "total_amount"])
-      .executeTakeFirstOrThrow();
+      .returning();
 
     return {
       success: true,
@@ -222,39 +221,38 @@ export const getQuoteStatusTool = {
     quoteId: z.number().describe("The quote ID from the database"),
   }),
   execute: async (params: { quoteId: number }) => {
-    const quote = await db
-      .selectFrom("quotes")
-      .selectAll()
-      .where("id", "=", params.quoteId)
-      .executeTakeFirst();
+    const [quote] = await db
+      .select()
+      .from(schema.quotes)
+      .where(eq(schema.quotes.id, params.quoteId))
+      .limit(1);
 
     if (!quote) {
       return { found: false, message: "Quote not found" };
     }
 
     // Get latest status from Stripe if we have a Stripe ID
-    if (quote.stripe_quote_id) {
+    if (quote.stripeQuoteId) {
       const stripeQuote = await stripeRequest(
-        `/quotes/${quote.stripe_quote_id}`,
+        `/quotes/${quote.stripeQuoteId}`,
         "GET",
       );
 
       // Update local status if changed
       if (stripeQuote.status !== quote.status) {
         await db
-          .updateTable("quotes")
+          .update(schema.quotes)
           .set({ status: stripeQuote.status })
-          .where("id", "=", params.quoteId)
-          .execute();
+          .where(eq(schema.quotes.id, params.quoteId));
       }
 
       return {
         found: true,
         quoteId: quote.id,
         status: stripeQuote.status,
-        totalAmount: quote.total_amount / 100,
+        totalAmount: quote.totalAmount / 100,
         items: quote.items,
-        expiresAt: quote.expires_at,
+        expiresAt: quote.expiresAt,
       };
     }
 
@@ -262,7 +260,7 @@ export const getQuoteStatusTool = {
       found: true,
       quoteId: quote.id,
       status: quote.status,
-      totalAmount: quote.total_amount / 100,
+      totalAmount: quote.totalAmount / 100,
       items: quote.items,
     };
   },

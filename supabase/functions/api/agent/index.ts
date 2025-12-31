@@ -14,10 +14,8 @@ export async function createHmlsAgent() {
     modelProvider: new AnthropicModelProvider({
       apiKey,
     }),
+    systemPrompt: SYSTEM_PROMPT,
     tools: [...calcomTools, ...customerTools, ...stripeTools],
-    overrides: {
-      systemPromptLoader: () => SYSTEM_PROMPT,
-    },
   });
 
   return agent;

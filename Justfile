@@ -10,27 +10,27 @@ dev-api:
 dev-web:
     cd hmls-web && bun dev
 
-# Infrastructure
-run-infra:
-    cd hmls-api && podman-compose up -d
+# Supabase (Database only)
+start:
+    supabase start
 
-stop-infra:
-    cd hmls-api && podman-compose down
+stop:
+    supabase stop
+
+status:
+    supabase status
 
 # Database
-db-push:
-    cd hmls-api && deno task db:push
+db-migrate:
+    cd hmls-api && deno task db:migrate
 
 db-seed:
     cd hmls-api && deno task db:seed
 
-db-generate:
-    cd hmls-api && deno task db:generate
-
 # Code quality
 fmt:
     cd hmls-api && deno fmt
-    cd hmls-web && bun run format
+    cd hmls-web && bun run fmt
 
 lint:
     cd hmls-api && deno lint
@@ -38,4 +38,11 @@ lint:
 
 # Build
 build:
+    cd hmls-web && bun run build
+
+# Deploy
+deploy-api:
+    cd hmls-api && deployctl deploy --project=hmls-api main.ts
+
+deploy-web:
     cd hmls-web && bun run build
